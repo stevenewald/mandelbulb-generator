@@ -1,5 +1,7 @@
 #include "lib.hpp"
 
+#include "glfw_handle.hpp"
+
 #include <fmt/core.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -12,15 +14,7 @@ library::library() : name{fmt::format("{}", "mandelbulb-generator")} {}
 void
 run()
 {
-    if (!glfwInit()) {
-        std::cerr << "Failed to initialize GLFW\n";
-        return;
-    }
-
-    // OpenGL 3.3 Core
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    fractal::GlfwHandle handle;
 
     // Create window
     GLFWwindow* window = glfwCreateWindow(800, 600, "GL Test", nullptr, nullptr);
@@ -47,5 +41,4 @@ run()
     }
 
     glfwDestroyWindow(window);
-    glfwTerminate();
 }

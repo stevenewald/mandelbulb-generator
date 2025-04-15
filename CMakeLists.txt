@@ -18,6 +18,8 @@ include(cmake/variables.cmake)
 add_library(
     mandelbulb-generator_lib OBJECT
     source/lib.cpp
+	source/glfw_handle.cpp
+	source/util.cpp
 )
 
 target_include_directories(
