@@ -28,8 +28,22 @@ target_include_directories(
 
 target_compile_features(mandelbulb-generator_lib PUBLIC cxx_std_20)
 
+# fmt - text formatting
 find_package(fmt REQUIRED)
 target_link_libraries(mandelbulb-generator_lib PRIVATE fmt::fmt)
+
+# glfw - opengl
+find_package(glfw3 REQUIRED)
+target_link_libraries(mandelbulb-generator_lib PRIVATE glfw)
+
+# glad - exposes function pointers to opengl functions
+find_package(glad REQUIRED)
+target_link_libraries(mandelbulb-generator_lib PRIVATE glad::glad)
+
+# imgui - gui
+find_package(imgui REQUIRED)
+target_link_libraries(mandelbulb-generator_lib PRIVATE imgui::imgui)
+
 
 # ---- Declare executable ----
 
