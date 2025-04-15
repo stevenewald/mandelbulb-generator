@@ -5,8 +5,8 @@ include(cmake/prelude.cmake)
 project(
     mandelbulb-generator
     VERSION 0.1.0
-    DESCRIPTION "Short description"
-    HOMEPAGE_URL "https://example.com/"
+	DESCRIPTION "Mandelbulb Raymarcher"
+    HOMEPAGE_URL "https://stevenewald.com/"
     LANGUAGES CXX
 )
 
