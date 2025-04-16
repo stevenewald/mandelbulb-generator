@@ -1,4 +1,6 @@
 from conan import ConanFile
+from conan.tools.files import copy
+from conans.model.dependencies import ConanFileInterface
 
 
 class Recipe(ConanFile):
@@ -16,3 +18,12 @@ class Recipe(ConanFile):
 
     def build_requirements(self):
         self.test_requires("catch2/3.7.0")
+
+    def generate(self):
+        dep = self.dependencies["imgui"]
+        copy(self, "imgui_impl_glfw.cpp", src=dep.package_folder + "/res/bindings", dst=str(self.build_folder)+"/bindings")
+        copy(self, "imgui_impl_glfw.h", src=dep.package_folder + "/res/bindings", dst=str(self.build_folder)+"/bindings")
+        copy(self, "imgui_impl_opengl3.cpp", src=dep.package_folder + "/res/bindings", dst=str(self.build_folder)+"/bindings")
+        copy(self, "imgui_impl_opengl3.h", src=dep.package_folder + "/res/bindings", dst=str(self.build_folder)+"/bindings")
+        copy(self, "imgui_impl_opengl3_loader.h", src=dep.package_folder + "/res/bindings", dst=str(self.build_folder)+"/bindings")
+

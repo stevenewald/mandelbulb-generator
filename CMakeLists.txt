@@ -13,7 +13,9 @@ project(
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 
+
 # ---- Declare library ----
+
 
 add_library(
     mandelbulb-generator_lib OBJECT
@@ -42,9 +44,24 @@ target_link_libraries(mandelbulb-generator_lib PRIVATE glfw)
 find_package(glad REQUIRED)
 target_link_libraries(mandelbulb-generator_lib PRIVATE glad::glad)
 
-# imgui - gui
+# ---- Imgui Bindings ----
+add_library(
+	imgui-bindings_lib
+	bindings/imgui_impl_glfw.cpp
+	bindings/imgui_impl_opengl3.cpp
+)
+
+target_include_directories(
+    imgui-bindings_lib ${warning_guard}
+    PUBLIC
+    "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/bindings>"
+)
+
 find_package(imgui REQUIRED)
-target_link_libraries(mandelbulb-generator_lib PRIVATE imgui::imgui)
+target_link_libraries(imgui-bindings_lib PUBLIC imgui::imgui)
+target_link_libraries(imgui-bindings_lib PRIVATE glfw)
+
+target_link_libraries(mandelbulb-generator_lib PRIVATE imgui-bindings_lib)
 
 
 # ---- Declare executable ----
