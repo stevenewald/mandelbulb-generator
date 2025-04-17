@@ -13,6 +13,7 @@ project(
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 
+add_compile_definitions(GLFW_INCLUDE_NONE)
 
 # ---- Declare library ----
 
@@ -20,7 +21,7 @@ include(cmake/variables.cmake)
 add_library(
     mandelbulb-generator_lib OBJECT
     source/lib.cpp
-	source/glfw_handle.cpp
+	source/handles/glfw_context_handle.cpp
 	source/util.cpp
 )
 

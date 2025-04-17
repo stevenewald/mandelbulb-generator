@@ -1,11 +1,11 @@
-#include "glfw_handle.hpp"
+#include "glfw_context_handle.hpp"
 
 #include "util.hpp"
 
 #include <GLFW/glfw3.h>
 
 namespace fractal {
-GlfwHandle::GlfwHandle()
+GlfwContextHandle::GlfwContextHandle()
 {
     if (glfwInit() == GLFW_FALSE) {
         fatal_error("Failed to initialize glfw");
@@ -17,7 +17,7 @@ GlfwHandle::GlfwHandle()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 }
 
-GlfwHandle::~GlfwHandle()
+GlfwContextHandle::~GlfwContextHandle()
 {
     glfwTerminate();
 }
