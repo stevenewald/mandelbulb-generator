@@ -2,6 +2,7 @@
 
 #include "handles/glfw_context_handle.hpp"
 #include "handles/glfw_window_handle.hpp"
+#include "triangle.hpp"
 
 #include <fmt/core.h>
 #include <glad/glad.h>
@@ -31,6 +32,8 @@ run()
         return;
     }
 
+    fractal::run_program();
+
     // Main loop
     while (!glfwWindowShouldClose(glfw_window_handle.get())) {
         glfwPollEvents();
@@ -38,6 +41,8 @@ run()
         // Clear the screen with a red background.
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // Swap buffers to display the rendered frame.
         glfwSwapBuffers(glfw_window_handle.get());

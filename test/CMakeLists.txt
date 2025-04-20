@@ -17,7 +17,7 @@ target_link_libraries(
     mandelbulb-generator_lib
     Catch2::Catch2WithMain
 )
-target_compile_features(mandelbulb-generator_test PRIVATE cxx_std_20)
+target_compile_features(mandelbulb-generator_test PRIVATE cxx_std_23)
 
 catch_discover_tests(mandelbulb-generator_test)
 

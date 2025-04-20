@@ -23,6 +23,7 @@ add_library(
     source/lib.cpp
 	source/handles/glfw_context_handle.cpp
 	source/util.cpp
+	source/shader.cpp
 )
 
 target_include_directories(
