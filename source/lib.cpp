@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <string>
+#include <thread>
 
 library::library() : name{fmt::format("{}", "mandelbulb-generator")} {}
 
@@ -32,7 +33,10 @@ run()
         return;
     }
 
-    fractal::run_program();
+    auto prog = fractal::run_program();
+
+    float t{};
+    int vertexTimeLocation = glGetUniformLocation(prog, "iTime");
 
     // Main loop
     while (!glfwWindowShouldClose(glfw_window_handle.get())) {
@@ -46,6 +50,10 @@ run()
 
         // Swap buffers to display the rendered frame.
         glfwSwapBuffers(glfw_window_handle.get());
+
+        glUniform1f(vertexTimeLocation, t);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        t += .01f;
     }
 
     glfwDestroyWindow(glfw_window_handle.get());

@@ -1,6 +1,5 @@
 from conan import ConanFile
 from conan.tools.files import copy
-from conans.model.dependencies import ConanFileInterface
 
 
 class Recipe(ConanFile):

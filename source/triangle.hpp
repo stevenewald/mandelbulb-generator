@@ -9,7 +9,7 @@
 #include <string>
 
 namespace fractal {
-void
+unsigned int
 compile_program()
 {
     unsigned int shaderProgram;
@@ -30,27 +30,24 @@ compile_program()
         glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
         std::cout << "ERROR::PROGRAM::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
+    int vertexColorLocation = glGetUniformLocation(shaderProgram, "iResolution");
     glUseProgram(shaderProgram);
+    glUniform2f(vertexColorLocation, 800.0f, 600.0f);
+
+    return shaderProgram;
 }
 
-void
+unsigned int
 run_program()
 {
-    compile_program();
-
-    std::array vertices{-1.0f, -1.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(), GL_STATIC_DRAW);
+    auto program = compile_program();
 
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
     glEnableVertexAttribArray(0);
     glBindVertexArray(VAO);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    return program;
 }
 
 } // namespace fractal
