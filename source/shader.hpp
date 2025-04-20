@@ -6,6 +6,7 @@
 #include <cstdint>
 
 #include <expected>
+#include <filesystem>
 
 namespace fractal {
 enum class ShaderType : std::uint8_t { vertex, fragment };
@@ -25,4 +26,6 @@ public:
 
     ~Shader();
 };
+
+Shader create_shader(const std::filesystem::path& path, ShaderType type);
 } // namespace fractal

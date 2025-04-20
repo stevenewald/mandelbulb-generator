@@ -9,30 +9,14 @@
 #include <string>
 
 namespace fractal {
-const char* const vert = R"(#version 330 core
-layout (location = 0) in vec3 aPos;
-		out vec4 pos;
-void main()
-{
-gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
-		pos = gl_Position;
-})";
-
-const char* const frag = R"(#version 330 core
-in vec4 pos;
-out vec4 FragColor;
-void main()
-{
-FragColor = vec4(pos.x+.5f, pos.y+0.5f, pos.z+0.5f, 1.0f);
-})";
-
 void
 compile_program()
 {
     unsigned int shaderProgram;
     shaderProgram = glCreateProgram();
-    auto vertex = Shader(vert, ShaderType::vertex);
-    auto fragment = Shader(frag, ShaderType::fragment);
+    auto vertex = create_shader("shaders/vertex/triangle.glsl", ShaderType::vertex);
+    auto fragment =
+        create_shader("shaders/fragment/triangle.glsl", ShaderType::fragment);
 
     glAttachShader(shaderProgram, vertex.get_id());
     glAttachShader(shaderProgram, fragment.get_id());
@@ -54,7 +38,7 @@ run_program()
 {
     compile_program();
 
-    std::array vertices{-0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f};
+    std::array vertices{-1.0f, -1.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
     unsigned int VBO;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);

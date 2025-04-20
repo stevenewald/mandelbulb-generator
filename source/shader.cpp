@@ -7,6 +7,8 @@
 
 #include <array>
 #include <expected>
+#include <filesystem>
+#include <fstream>
 #include <stdexcept>
 
 namespace fractal {
@@ -51,6 +53,14 @@ compile_shader(const char* shader_code, ShaderType type)
     return shader;
 }
 } // namespace
+
+Shader
+create_shader(const std::filesystem::path& path, ShaderType type)
+{
+    std::ifstream in_str{path, std::ios::binary};
+    const std::string in_str_c{std::istreambuf_iterator<char>(in_str), {}};
+    return {in_str_c.data(), type};
+}
 
 Shader::Shader(const char* str, ShaderType type) : SHADER_ID{compile_shader(str, type)}
 {}
