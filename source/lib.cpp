@@ -36,7 +36,10 @@ run()
     auto prog = fractal::run_program();
 
     float t{};
-    int vertexTimeLocation = glGetUniformLocation(prog, "iTime");
+    int vertex_time_location = prog.get_uniform_location("iTime");
+    int vertex_res_location = prog.get_uniform_location("iResolution");
+    prog.use();
+    glUniform2f(vertex_res_location, 800.0f, 600.0f);
 
     // Main loop
     while (!glfwWindowShouldClose(glfw_window_handle.get())) {
@@ -51,7 +54,7 @@ run()
         // Swap buffers to display the rendered frame.
         glfwSwapBuffers(glfw_window_handle.get());
 
-        glUniform1f(vertexTimeLocation, t);
+        glUniform1f(vertex_time_location, t);
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
         t += .01f;
     }

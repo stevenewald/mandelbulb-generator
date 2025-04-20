@@ -5,7 +5,6 @@
 
 #include <cstdint>
 
-#include <expected>
 #include <filesystem>
 
 namespace fractal {
