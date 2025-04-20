@@ -6,7 +6,6 @@
 #include <cstdint>
 
 #include <array>
-#include <expected>
 #include <filesystem>
 #include <fstream>
 #include <stdexcept>
