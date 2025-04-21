@@ -17,26 +17,23 @@ library::library() : name{fmt::format("{}", "mandelbulb-generator")} {}
 namespace {
 float delta = 0.01f;
 float R = 3.0f;
-float pitch = 0, yaw = 0;
-float pos[3] = {0};
+float pitch = 0.0001f;
+float yaw = 0.0f;
+float pos[3]{};
 
 void
 process_input(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         yaw += delta;
-    }
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         yaw -= delta;
-    }
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         pitch -= delta;
-    }
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         pitch += delta;
-    }
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
         R -= delta;
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
@@ -83,6 +80,7 @@ run()
         glfwPollEvents();
 
         process_input(glfw_window_handle.get());
+        glUniform3f(vertex_ro_location, pos[0], pos[1], pos[2]);
 
         // Clear the screen with a red background.
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
@@ -94,7 +92,6 @@ run()
         glfwSwapBuffers(glfw_window_handle.get());
 
         glUniform1f(vertex_time_location, t);
-        glUniform3f(vertex_ro_location, pos[0], pos[1], pos[2]);
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
         t += .01f;
     }

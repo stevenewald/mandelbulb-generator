@@ -2,8 +2,8 @@ version: '3'
 
 vars:
   NAME: mandelbulb-generator
-  RELEASE_BUILD: "false"
-  RELEASE_PRESET: "ci-ubuntu"
+  RELEASE_BUILD: "true"
+  RELEASE_PRESET: "ci-macos"
 
 tasks:
   deps:
@@ -33,7 +33,7 @@ tasks:
   run:
     dir: .
     vars:
-      PATH: '{{if eq .RELEASE_BUILD "true"}}build/{{.NAME}}{{else}}build/dev/{{.NAME}}{{end}}'
+      PATH: '{{if eq .RELEASE_BUILD "true"}}build/Release/{{.NAME}}{{else}}build/dev/{{.NAME}}{{end}}'
     cmds:
       - task: build
       - ./{{ .PATH }}

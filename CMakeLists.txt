@@ -24,6 +24,7 @@ add_library(
 	source/handles/glfw_context_handle.cpp
 	source/util.cpp
 	source/shader.cpp
+	source/program.cpp
 )
 
 target_include_directories(

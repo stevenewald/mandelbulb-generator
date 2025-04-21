@@ -7,7 +7,7 @@ uniform float iTime;
 uniform vec3 camPos;
 
 #define MAX_DIST 200.0
-#define MAX_STEPS 500
+#define MAX_STEPS 100
 #define EPSILON 0.0001
 #define Power 3
 
@@ -78,7 +78,7 @@ void main()
 
 	// pixel → NDC → screen space (keep same as your xy logic)
 	vec2 xy        = pos.xy - iResolution.xy * 0.5;
-	float fov      = radians(70.0);
+	float fov      = radians(50.0);
 	float zPlane   = iResolution.y / tan(fov * 0.5);
 
 	// assemble ray
