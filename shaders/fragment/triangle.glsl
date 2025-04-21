@@ -6,7 +6,7 @@ uniform vec2 iResolution;
 uniform float iTime;
 
 #define MAX_DIST 100.0
-#define MAX_STEPS 200
+#define MAX_STEPS 300
 #define EPSILON 0.0001
 #define Power 3
 

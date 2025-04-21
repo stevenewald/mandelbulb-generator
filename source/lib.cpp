@@ -14,6 +14,13 @@
 library::library() : name{fmt::format("{}", "mandelbulb-generator")} {}
 
 void
+processInput(GLFWwindow* window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+}
+
+void
 run()
 {
     fractal::GlfwContextHandle glfw_context_handle;
@@ -45,6 +52,8 @@ run()
     while (!glfwWindowShouldClose(glfw_window_handle.get())) {
         glfwPollEvents();
 
+        processInput(glfw_window_handle.get());
+
         // Clear the screen with a red background.
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -58,6 +67,4 @@ run()
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
         t += .01f;
     }
-
-    glfwDestroyWindow(glfw_window_handle.get());
 }
