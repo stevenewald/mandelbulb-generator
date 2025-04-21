@@ -29,6 +29,7 @@ add_library(
 	source/program.cpp
 	source/camera.cpp
 	source/camera_ubo.cpp
+	source/cubemap.cpp
 )
 
 target_include_directories(
@@ -46,6 +47,10 @@ target_link_libraries(mandelbulb-generator_lib PRIVATE fmt::fmt)
 # glfw - opengl
 find_package(glfw3 REQUIRED)
 target_link_libraries(mandelbulb-generator_lib PRIVATE glfw)
+
+# stb - image loading
+find_package(stb REQUIRED)
+target_link_libraries(mandelbulb-generator_lib PRIVATE stb::stb)
 
 # glm - math
 find_package(glm REQUIRED)

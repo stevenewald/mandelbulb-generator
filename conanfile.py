@@ -15,6 +15,7 @@ class Recipe(ConanFile):
         self.requires("imgui/1.91.8")
         self.requires("glad/0.1.36")
         self.requires("glm/1.0.1")
+        self.requires("stb/cci.20240531")
 
     def build_requirements(self):
         self.test_requires("catch2/3.7.0")
@@ -24,6 +25,7 @@ class Recipe(ConanFile):
         self.options["glfw"].shared=False
         self.options["imgui"].shared=False
         self.options["glad"].shared=False
+        self.options["stb"].shared=False
         self.options["glm"].shared=False
 
     def generate(self):
