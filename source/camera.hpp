@@ -18,7 +18,7 @@ public:
     void modify_pitch(float delta);
     void modify_radius(float delta);
 
-    void process_input(GLFWwindow* window);
+    bool process_input(GLFWwindow* window);
 
     struct ray_args {
         glm::vec3 campos;

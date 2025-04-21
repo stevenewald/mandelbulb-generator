@@ -23,24 +23,42 @@ Camera::modify_radius(float delta)
     radius_ += delta;
 }
 
-void
+bool
 Camera::process_input(GLFWwindow* window)
 {
-    static constexpr float delta = 0.01f;
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    static constexpr float delta = 0.02f;
+    bool input_processed = false;
+
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        input_processed = true;
+    }
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         modify_yaw(delta);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        input_processed = true;
+    }
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         modify_yaw(-delta);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        input_processed = true;
+    }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
         modify_pitch(-delta);
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        input_processed = true;
+    }
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         modify_pitch(delta);
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        input_processed = true;
+    }
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
         modify_radius(-delta);
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        input_processed = true;
+    }
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
         modify_radius(delta);
+        input_processed = true;
+    }
+
+    return input_processed;
 }
 
 Camera::ray_args

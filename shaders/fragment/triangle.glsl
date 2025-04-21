@@ -13,7 +13,7 @@ vec3 z;
 };
 
 #define MAX_DIST 200.0
-#define MAX_STEPS 100
+#define MAX_STEPS 500
 #define EPSILON 0.0001
 #define Power 3
 
@@ -94,5 +94,5 @@ void main()
 		return;
 	}
 
-	fragColor = vec4(vec3(0.0), 1.0);
+	fragColor = vec4(0.0);
 }

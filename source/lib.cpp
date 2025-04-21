@@ -44,11 +44,21 @@ run()
     prog.use();
     glUniform2f(vertex_res_location, 800.0f, 600.0f);
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    bool fst = true;
+
     // Main loop
     while (!glfwWindowShouldClose(glfw_window_handle.get())) {
         glfwPollEvents();
 
-        camera.process_input(glfw_window_handle.get());
+        if (!camera.process_input(glfw_window_handle.get()) && !fst) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            continue;
+        }
+        fst = false;
+
         camera_ubo.update(camera.get_args(600.0f));
         camera_ubo.bind();
 
@@ -62,7 +72,6 @@ run()
         glfwSwapBuffers(glfw_window_handle.get());
 
         glUniform1f(vertex_time_location, t);
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
         t += .01f;
     }
 }
