@@ -6,6 +6,7 @@
 
 #include <fmt/core.h>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 #include <iostream>
 #include <string>
@@ -13,12 +14,29 @@
 
 library::library() : name{fmt::format("{}", "mandelbulb-generator")} {}
 
+namespace {
+float pos[3] = {0.0f, 0.0f, 2.0f};
+float delta = 0.01f;
+
 void
-processInput(GLFWwindow* window)
+process_input(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
+        glfwSetWindowShouldClose(window, GL_TRUE);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        pos[0] += delta;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        pos[0] -= delta;
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        pos[1] += delta;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        pos[1] -= delta;
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        pos[2] -= delta;
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        pos[2] += delta;
 }
+} // namespace
 
 void
 run()
@@ -45,6 +63,7 @@ run()
     float t{};
     int vertex_time_location = prog.get_uniform_location("iTime");
     int vertex_res_location = prog.get_uniform_location("iResolution");
+    int vertex_ro_location = prog.get_uniform_location("ro");
     prog.use();
     glUniform2f(vertex_res_location, 800.0f, 600.0f);
 
@@ -52,7 +71,7 @@ run()
     while (!glfwWindowShouldClose(glfw_window_handle.get())) {
         glfwPollEvents();
 
-        processInput(glfw_window_handle.get());
+        process_input(glfw_window_handle.get());
 
         // Clear the screen with a red background.
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
@@ -64,6 +83,7 @@ run()
         glfwSwapBuffers(glfw_window_handle.get());
 
         glUniform1f(vertex_time_location, t);
+        glUniform3f(vertex_ro_location, pos[0], pos[1], pos[2]);
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
         t += .01f;
     }

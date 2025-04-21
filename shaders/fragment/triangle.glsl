@@ -4,6 +4,7 @@ out vec4 fragColor;
 
 uniform vec2 iResolution;
 uniform float iTime;
+uniform vec3 ro;
 
 #define MAX_DIST 100.0
 #define MAX_STEPS 300
@@ -70,7 +71,7 @@ float trace(vec3 ro, vec3 rd, out int steps) {
 void main()
 {
 	vec2 xy = pos - iResolution.xy / 2.0;
-	vec3 ro = vec3(0.25 * cos(iTime), 0.5 * sin(iTime), 2.0 + .8 * sin(iTime / 3.0));
+	// vec3 ro = vec3(0.25 * cos(iTime), 0.5 * sin(iTime), 2.0 + .8 * sin(iTime / 3.0));
 	vec3 rd = normalize(vec3(xy, -iResolution.y / tan(radians(50.0) / 2.0)));
 	int steps = 0;
 
