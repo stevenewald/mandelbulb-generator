@@ -23,6 +23,26 @@ Camera::modify_radius(float delta)
     radius_ += delta;
 }
 
+void
+Camera::process_input(GLFWwindow* window)
+{
+    static constexpr float delta = 0.01f;
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        modify_yaw(delta);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        modify_yaw(-delta);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        modify_pitch(-delta);
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        modify_pitch(delta);
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        modify_radius(-delta);
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        modify_radius(delta);
+}
+
 Camera::ray_args
 Camera::get_args(float y_res) const
 {

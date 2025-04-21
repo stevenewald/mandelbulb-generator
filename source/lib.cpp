@@ -16,30 +16,7 @@
 
 library::library() : name{fmt::format("{}", "mandelbulb-generator")} {}
 
-namespace {
-float delta = 0.01f;
 fractal::Camera camera{};
-
-void
-process_input(GLFWwindow* window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.modify_yaw(delta);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.modify_yaw(-delta);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.modify_pitch(-delta);
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.modify_pitch(delta);
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        camera.modify_radius(-delta);
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        camera.modify_radius(delta);
-}
-
-} // namespace
 
 void
 run()
@@ -71,7 +48,7 @@ run()
     while (!glfwWindowShouldClose(glfw_window_handle.get())) {
         glfwPollEvents();
 
-        process_input(glfw_window_handle.get());
+        camera.process_input(glfw_window_handle.get());
         camera_ubo.update(camera.get_args(600.0f));
         camera_ubo.bind();
 

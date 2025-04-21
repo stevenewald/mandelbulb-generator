@@ -1,5 +1,6 @@
 #pragma once
 
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -16,6 +17,8 @@ public:
     void modify_yaw(float delta);
     void modify_pitch(float delta);
     void modify_radius(float delta);
+
+    void process_input(GLFWwindow* window);
 
     struct ray_args {
         glm::vec3 campos;
