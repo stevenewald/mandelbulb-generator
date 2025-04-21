@@ -4,6 +4,7 @@ out vec4 fragColor;
 
 uniform vec2 iResolution;
 uniform float iTime;
+uniform samplerCube skybox;
 
 uniform CameraData {
 vec3 camPos;

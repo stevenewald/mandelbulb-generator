@@ -3,6 +3,7 @@
 #include "camera.hpp"
 #include "camera_ubo.hpp"
 #include "handles/glfw_context_handle.hpp"
+#include "cubemap.hpp"
 #include "handles/glfw_window_handle.hpp"
 #include "triangle.hpp"
 
@@ -46,6 +47,8 @@ run()
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	auto cm = fractal::loadCubemap({"nx.png", "ny.png", "nz.png", "px.png", "py.png", "pz.png"});
 
     bool fst = true;
 
