@@ -3,6 +3,7 @@
 
 #include <glad/glad.h>
 
+#include <array>
 #include <filesystem>
 #include <span>
 
