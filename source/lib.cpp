@@ -15,27 +15,38 @@
 library::library() : name{fmt::format("{}", "mandelbulb-generator")} {}
 
 namespace {
-float pos[3] = {0.0f, 0.0f, 2.0f};
 float delta = 0.01f;
+float R = 3.0f;
+float pitch = 0, yaw = 0;
+float pos[3] = {0};
 
 void
 process_input(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        pos[0] += delta;
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        pos[0] -= delta;
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        pos[1] += delta;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        pos[1] -= delta;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        yaw += delta;
+    }
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        yaw -= delta;
+    }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        pitch -= delta;
+    }
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        pitch += delta;
+    }
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        pos[2] -= delta;
+        R -= delta;
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        pos[2] += delta;
+        R += delta;
+
+    pos[0] = R * cosf(pitch) * sinf(yaw);
+    pos[1] = R * sinf(pitch);
+    pos[2] = R * cosf(pitch) * cosf(yaw);
 }
+
 } // namespace
 
 void
@@ -63,7 +74,7 @@ run()
     float t{};
     int vertex_time_location = prog.get_uniform_location("iTime");
     int vertex_res_location = prog.get_uniform_location("iResolution");
-    int vertex_ro_location = prog.get_uniform_location("ro");
+    int vertex_ro_location = prog.get_uniform_location("camPos");
     prog.use();
     glUniform2f(vertex_res_location, 800.0f, 600.0f);
 

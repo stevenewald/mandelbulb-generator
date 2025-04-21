@@ -4,10 +4,10 @@ out vec4 fragColor;
 
 uniform vec2 iResolution;
 uniform float iTime;
-uniform vec3 ro;
+uniform vec3 camPos;
 
-#define MAX_DIST 100.0
-#define MAX_STEPS 300
+#define MAX_DIST 200.0
+#define MAX_STEPS 500
 #define EPSILON 0.0001
 #define Power 3
 
@@ -70,12 +70,26 @@ float trace(vec3 ro, vec3 rd, out int steps) {
 
 void main()
 {
-	vec2 xy = pos - iResolution.xy / 2.0;
-	// vec3 ro = vec3(0.25 * cos(iTime), 0.5 * sin(iTime), 2.0 + .8 * sin(iTime / 3.0));
-	vec3 rd = normalize(vec3(xy, -iResolution.y / tan(radians(50.0) / 2.0)));
+	vec3 target    = vec3(0.0);                  
+	vec3 forward   = normalize(target - camPos);        // view direction
+	vec3 worldUp   = vec3(0.0, 1.0, 0.0);              
+	vec3 right     = normalize(cross(forward, worldUp));// camera X
+	vec3 up        = cross(right, forward);             // camera Y
+
+	// pixel → NDC → screen space (keep same as your xy logic)
+	vec2 xy        = pos.xy - iResolution.xy * 0.5;
+	float fov      = radians(70.0);
+	float zPlane   = iResolution.y / tan(fov * 0.5);
+
+	// assemble ray
+	vec3 rd = normalize(
+		xy.x * right +
+		xy.y * up +
+		zPlane * forward
+	);
 	int steps = 0;
 
-	float dist = trace(ro, rd, steps);
+	float dist = trace(camPos, rd, steps);
 
 	if (dist < MAX_DIST) {
 		fragColor = colorForQ(steps);
