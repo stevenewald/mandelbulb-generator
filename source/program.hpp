@@ -16,6 +16,13 @@ public:
     void use() const;
 
     int get_uniform_location(const char* name) const;
+    int get_uniform_block_location(const char* name) const;
+
+    unsigned int
+    get_id() const
+    {
+        return SHADER_PROGRAM;
+    }
 
     Program(const Program&) = delete;
     Program(Program&&) = delete;

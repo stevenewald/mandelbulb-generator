@@ -13,6 +13,8 @@ project(
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 
+set(BUILD_SHARED_LIBS OFF)
+
 add_compile_definitions(GLFW_INCLUDE_NONE)
 
 # ---- Declare library ----
@@ -25,6 +27,8 @@ add_library(
 	source/util.cpp
 	source/shader.cpp
 	source/program.cpp
+	source/camera.cpp
+	source/camera_ubo.cpp
 )
 
 target_include_directories(
@@ -42,6 +46,10 @@ target_link_libraries(mandelbulb-generator_lib PRIVATE fmt::fmt)
 # glfw - opengl
 find_package(glfw3 REQUIRED)
 target_link_libraries(mandelbulb-generator_lib PRIVATE glfw)
+
+# glm - math
+find_package(glm REQUIRED)
+target_link_libraries(mandelbulb-generator_lib PRIVATE glm::glm)
 
 # glad - exposes function pointers to opengl functions
 find_package(glad REQUIRED)

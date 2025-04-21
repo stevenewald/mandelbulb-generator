@@ -19,6 +19,13 @@ class Recipe(ConanFile):
     def build_requirements(self):
         self.test_requires("catch2/3.7.0")
 
+    def configure(self):
+        self.options["fmt"].shared=False
+        self.options["glfw"].shared=False
+        self.options["imgui"].shared=False
+        self.options["glad"].shared=False
+        self.options["glm"].shared=False
+
     def generate(self):
         dep = self.dependencies["imgui"]
         copy(self, "imgui_impl_glfw.cpp", src=dep.package_folder + "/res/bindings", dst=str(self.build_folder)+"/bindings")

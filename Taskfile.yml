@@ -17,7 +17,7 @@ tasks:
     preconditions:
       - test -f CMakeUserPresets.json
     cmds:
-      - cmake --preset=dev
+      # - cmake --preset=dev
       - cmake --preset={{.RELEASE_PRESET}} -DCMAKE_BUILD_TYPE=Release
 
 

@@ -44,6 +44,12 @@ Program::use() const
 }
 
 int
+Program::get_uniform_block_location(const char* name) const
+{
+    return glGetUniformBlockIndex(SHADER_PROGRAM, name);
+}
+
+int
 Program::get_uniform_location(const char* name) const
 {
     return glGetUniformLocation(SHADER_PROGRAM, name);

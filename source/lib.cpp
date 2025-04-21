@@ -1,5 +1,7 @@
 #include "lib.hpp"
 
+#include "camera.hpp"
+#include "camera_ubo.hpp"
 #include "handles/glfw_context_handle.hpp"
 #include "handles/glfw_window_handle.hpp"
 #include "triangle.hpp"
@@ -16,10 +18,7 @@ library::library() : name{fmt::format("{}", "mandelbulb-generator")} {}
 
 namespace {
 float delta = 0.01f;
-float R = 3.0f;
-float pitch = 0.0001f;
-float yaw = 0.0f;
-float pos[3]{};
+fractal::Camera camera{};
 
 void
 process_input(GLFWwindow* window)
@@ -27,21 +26,17 @@ process_input(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        yaw += delta;
+        camera.modify_yaw(delta);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        yaw -= delta;
+        camera.modify_yaw(-delta);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        pitch -= delta;
+        camera.modify_pitch(-delta);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        pitch += delta;
+        camera.modify_pitch(delta);
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        R -= delta;
+        camera.modify_radius(-delta);
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        R += delta;
-
-    pos[0] = R * cosf(pitch) * sinf(yaw);
-    pos[1] = R * sinf(pitch);
-    pos[2] = R * cosf(pitch) * cosf(yaw);
+        camera.modify_radius(delta);
 }
 
 } // namespace
@@ -52,12 +47,7 @@ run()
     fractal::GlfwContextHandle glfw_context_handle;
 
     fractal::GlfwWindowHandle glfw_window_handle =
-        fractal::create_window_handle(800, 600, "GL Test", nullptr, nullptr);
-    if (glfw_window_handle.get() == nullptr) {
-        std::cerr << "Failed to create GLFW window\n";
-        glfwTerminate();
-        return;
-    }
+        fractal::create_window_handle(800, 600, "Mandelbulb", nullptr, nullptr);
     glfwMakeContextCurrent(glfw_window_handle.get());
 
     // Load OpenGL functions with GLAD
@@ -71,7 +61,9 @@ run()
     float t{};
     int vertex_time_location = prog.get_uniform_location("iTime");
     int vertex_res_location = prog.get_uniform_location("iResolution");
-    int vertex_ro_location = prog.get_uniform_location("camPos");
+
+    fractal::CameraUBO camera_ubo{};
+    camera_ubo.attachToShader(prog, "CameraData");
     prog.use();
     glUniform2f(vertex_res_location, 800.0f, 600.0f);
 
@@ -80,7 +72,8 @@ run()
         glfwPollEvents();
 
         process_input(glfw_window_handle.get());
-        glUniform3f(vertex_ro_location, pos[0], pos[1], pos[2]);
+        camera_ubo.update(camera.get_args(600.0f));
+        camera_ubo.bind();
 
         // Clear the screen with a red background.
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
