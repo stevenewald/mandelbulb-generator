@@ -2,8 +2,8 @@ version: '3'
 
 vars:
   NAME: mandelbulb-generator
-  RELEASE_BUILD: "true"
-  RELEASE_PRESET: "ci-macos"
+  RELEASE_BUILD: "false"
+  RELEASE_PRESET: "ci-ubuntu"
 
 tasks:
   deps:

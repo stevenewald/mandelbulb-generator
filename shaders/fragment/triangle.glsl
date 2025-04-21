@@ -13,7 +13,7 @@ vec3 up;
 vec3 z;
 };
 
-#define MAX_DIST 200.0
+#define MAX_DIST 400.0
 #define MAX_STEPS 500
 #define EPSILON 0.0001
 #define Power 3
@@ -95,5 +95,5 @@ void main()
 		return;
 	}
 
-	fragColor = vec4(0.0);
+	fragColor = texture(skybox, rd);
 }
