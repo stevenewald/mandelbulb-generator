@@ -92,6 +92,25 @@ vec3 estimateNormal(vec3 p) {
     ));
 }
 
+// number of soft‐shadow samples
+const int SHADOW_SAMPLES = 10;
+
+// call this to populate your offsets[], then use offs[i].xy in your PCF loop
+void generateOffsets(out vec3 offs[SHADOW_SAMPLES]) {
+    const float TAU = 6.28318530718;
+    float radius = 5.0;
+
+    for(int i = 0; i < SHADOW_SAMPLES; ++i) {
+        // uniformly spaced angles around a circle
+        float angle = TAU * float(i) / float(SHADOW_SAMPLES);
+        // on the XY‐plane, z = 0
+        offs[i] = vec3(cos(angle) * radius,
+                       sin(angle) * radius,
+                       0.0);
+    }
+}
+
+
 void main()
 {
 	vec2 xy = pos.xy - iResolution.xy * 0.5;
@@ -105,21 +124,26 @@ void main()
 	int p_steps = 0;
 
 	float dist = trace(camPos, rd, p_steps);
-
 	if (dist < MAX_DIST) {
-        vec3 p = camPos + rd * dist;
+		vec3 offs[SHADOW_SAMPLES];
+		generateOffsets(offs);
+		vec3 p = camPos + rd * dist;
+		int blocked = 0;
+		for(int i = 0; i < SHADOW_SAMPLES; ++i) {
 
-        vec3 n = estimateNormal(p);
-        vec3 ro_shadow = p + n * (EPSILON * 5.0);
+			vec3 n = estimateNormal(p) + offs[i];
+			vec3 ro_shadow = p + n * (EPSILON * 5.0);
 
-        int shadow_steps = 0;
-        float sundist = trace(ro_shadow, sunDirection, shadow_steps);
+			int shadow_steps = 0;
+			float sundist = trace(ro_shadow, sunDirection, shadow_steps);
 
-        if (sundist < MAX_DIST) {
-            fragColor = vec4(0,0,0,1);  // in shadow
-        } else {
-            fragColor = colorForQ(p_steps);
-        }
+
+			if (sundist < MAX_DIST) {
+				++blocked;
+			}
+		}
+		fragColor = colorForQ(p_steps);
+		fragColor.xyz = fragColor.xyz * (1-((float(blocked)/10.0f)/(float(SHADOW_SAMPLES)/4)));
         return;
     }
 

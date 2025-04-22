@@ -43,6 +43,7 @@ run()
 
     fractal::CameraUBO camera_ubo{};
     camera_ubo.attachToShader(prog, "CameraData");
+    camera.modify_yaw(90);
     prog.use();
     glUniform2f(vertex_res_location, 800.0f, 600.0f);
 

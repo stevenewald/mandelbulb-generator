@@ -26,7 +26,6 @@ Camera::modify_radius(float delta)
 bool
 Camera::process_input(GLFWwindow* window)
 {
-    static constexpr float delta = 0.02f;
     bool input_processed = false;
 
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -34,27 +33,27 @@ Camera::process_input(GLFWwindow* window)
         input_processed = true;
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        modify_yaw(delta);
+        modify_yaw(DELTA);
         input_processed = true;
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        modify_yaw(-delta);
+        modify_yaw(-DELTA);
         input_processed = true;
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        modify_pitch(-delta);
+        modify_pitch(-DELTA);
         input_processed = true;
     }
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        modify_pitch(delta);
+        modify_pitch(DELTA);
         input_processed = true;
     }
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-        modify_radius(-delta);
+        modify_radius(-DELTA);
         input_processed = true;
     }
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-        modify_radius(delta);
+        modify_radius(DELTA);
         input_processed = true;
     }
 
@@ -78,8 +77,9 @@ Camera::get_args(float y_res) const
     float fov = glm::radians(60.0f);
     float zPlane = y_res / tan(fov * 0.5f);
     glm::vec3 z = zPlane * forward;
-    return {
-        camPos, right, up, z, {1, 0, 0}
-    };
+
+    glm::vec3 sun = {1, .1, 0};
+    sun = glm::normalize(sun);
+    return {camPos, right, up, z, sun};
 }
 } // namespace fractal
