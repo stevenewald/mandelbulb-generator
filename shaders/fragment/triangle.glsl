@@ -11,6 +11,7 @@ vec3 camPos;
 vec3 right;
 vec3 up;
 vec3 z;
+vec3 sunDirection;
 };
 
 #define MAX_DIST 400.0
@@ -75,10 +76,25 @@ float trace(vec3 ro, vec3 rd, out int steps) {
   return MAX_DIST;
 }
 
+float mapDistance(vec3 p) {
+    int dummy;
+    return SDF(p, dummy);
+}
+
+// central‐difference normal estimation
+vec3 estimateNormal(vec3 p) {
+    // slightly larger epsilon for gradient sampling
+    float h = EPSILON * 10.0;
+    return normalize(vec3(
+        mapDistance(p + vec3( h,0,0)) - mapDistance(p - vec3( h,0,0)),
+        mapDistance(p + vec3(0, h,0)) - mapDistance(p - vec3(0, h,0)),
+        mapDistance(p + vec3(0,0, h)) - mapDistance(p - vec3(0,0, h))
+    ));
+}
+
 void main()
 {
-	// pixel → NDC → screen space (keep same as your xy logic)
-	vec2 xy        = pos.xy - iResolution.xy * 0.5;
+	vec2 xy = pos.xy - iResolution.xy * 0.5;
 
 	// assemble ray
 	vec3 rd = normalize(
@@ -86,14 +102,26 @@ void main()
 		xy.y * up +
 		z
 	);
-	int steps = 0;
+	int p_steps = 0;
 
-	float dist = trace(camPos, rd, steps);
+	float dist = trace(camPos, rd, p_steps);
 
 	if (dist < MAX_DIST) {
-		fragColor = colorForQ(steps);
-		return;
-	}
+        vec3 p = camPos + rd * dist;
+
+        vec3 n = estimateNormal(p);
+        vec3 ro_shadow = p + n * (EPSILON * 5.0);
+
+        int shadow_steps = 0;
+        float sundist = trace(ro_shadow, sunDirection, shadow_steps);
+
+        if (sundist < MAX_DIST) {
+            fragColor = vec4(0,0,0,1);  // in shadow
+        } else {
+            fragColor = colorForQ(p_steps);
+        }
+        return;
+    }
 
 	fragColor = texture(skybox, rd);
 }

@@ -25,7 +25,7 @@ run()
     fractal::GlfwContextHandle glfw_context_handle;
 
     fractal::GlfwWindowHandle glfw_window_handle =
-        fractal::create_window_handle(800 * 2, 600 * 2, "Mandelbulb", nullptr, nullptr);
+        fractal::create_window_handle(800, 600, "Mandelbulb", nullptr, nullptr);
     glfwMakeContextCurrent(glfw_window_handle.get());
 
     // Load OpenGL functions with GLAD

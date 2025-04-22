@@ -25,6 +25,7 @@ public:
         glm::vec3 right;
         glm::vec3 up;
         glm::vec3 z;
+        glm::vec3 sunDirection;
     };
 
     ray_args get_args(float y_res) const;

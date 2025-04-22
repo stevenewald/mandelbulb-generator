@@ -15,7 +15,7 @@ run_program()
 {
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
-    glEnableVertexAttribArray(0);
+    // glEnableVertexAttribArray(0);
     glBindVertexArray(VAO);
 
     std::filesystem::path vertex = "shaders/vertex/triangle.glsl";

@@ -78,6 +78,8 @@ Camera::get_args(float y_res) const
     float fov = glm::radians(60.0f);
     float zPlane = y_res / tan(fov * 0.5f);
     glm::vec3 z = zPlane * forward;
-    return {camPos, right, up, z};
+    return {
+        camPos, right, up, z, {1, 0, 0}
+    };
 }
 } // namespace fractal

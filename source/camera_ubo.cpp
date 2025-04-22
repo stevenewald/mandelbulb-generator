@@ -20,12 +20,7 @@ CameraUBO::~CameraUBO()
 void
 CameraUBO::update(const Camera::ray_args& args)
 {
-    CameraData data = {
-        args.campos,
-        args.right,
-        args.up,
-        args.z,
-    };
+    CameraData data = {args.campos, args.right, args.up, args.z, args.sunDirection};
 
     glBindBuffer(GL_UNIFORM_BUFFER, ubo_);
     glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(CameraData), &data);
