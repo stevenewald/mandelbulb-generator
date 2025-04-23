@@ -78,7 +78,7 @@ Camera::get_args(float y_res) const
     float zPlane = y_res / tanf(fov * 0.5f);
     glm::vec3 z = zPlane * forward;
 
-    glm::vec3 sun = {1, .1, 0};
+    glm::vec3 sun = {1, .1, .2};
     sun = glm::normalize(sun);
     return {camPos, right, up, z, sun};
 }

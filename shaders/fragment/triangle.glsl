@@ -109,7 +109,7 @@ estimateNormal(vec3 p)
 }
 
 // number of soft‐shadow samples
-const int SHADOW_STEPS = 1024;
+const int SHADOW_STEPS = 256;
 const float SHADOW_K = 32.0;
 const float SHADOW_EPS = EPSILON * 2.0;
 
