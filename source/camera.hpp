@@ -10,7 +10,7 @@
 namespace fractal {
 class Camera {
     static constexpr float DELTA = 0.05f;
-    float radius_ = 3.0f;
+    float radius_ = 4.0f;
     float pitch_ = 0.0001f;
     float yaw_ = 0.0f;
 
@@ -26,7 +26,7 @@ public:
         glm::vec3 right;
         glm::vec3 up;
         glm::vec3 z;
-        glm::vec3 sunDirection;
+        glm::vec3 sun_direction;
     };
 
     ray_args get_args(float y_res) const;

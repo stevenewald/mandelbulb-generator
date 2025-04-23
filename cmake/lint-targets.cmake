@@ -3,6 +3,7 @@ set(
     source/*.cpp source/*.hpp
     include/*.hpp
     test/*.cpp test/*.hpp
+	shaders/*.glsl
     CACHE STRING
     "; separated patterns relative to the project source dir to format"
 )

@@ -75,7 +75,7 @@ Camera::get_args(float y_res) const
     glm::vec3 up = glm::cross(right, forward);                      // camera Y
 
     float fov = glm::radians(60.0f);
-    float zPlane = y_res / tan(fov * 0.5f);
+    float zPlane = y_res / tanf(fov * 0.5f);
     glm::vec3 z = zPlane * forward;
 
     glm::vec3 sun = {1, .1, 0};

@@ -25,7 +25,7 @@ run()
     fractal::GlfwContextHandle glfw_context_handle;
 
     fractal::GlfwWindowHandle glfw_window_handle =
-        fractal::create_window_handle(800, 600, "Mandelbulb", nullptr, nullptr);
+        fractal::create_window_handle(800 * 2, 600 * 2, "Mandelbulb", nullptr, nullptr);
     glfwMakeContextCurrent(glfw_window_handle.get());
 
     // Load OpenGL functions with GLAD
@@ -50,9 +50,7 @@ run()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    auto cm = fractal::loadCubemap(
-        {"px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"}
-    );
+    fractal::loadCubemap({"px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"});
     glUniform1i(vertex_skybox_location, 0);
 
     bool fst = true;

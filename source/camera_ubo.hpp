@@ -14,7 +14,7 @@ public:
         alignas(16) glm::vec3 right;
         alignas(16) glm::vec3 up;
         alignas(16) glm::vec3 z;
-        alignas(16) glm::vec3 sunDirection;
+        alignas(16) glm::vec3 sun_direction;
     };
 
     CameraUBO();
