@@ -7,10 +7,10 @@ endif()
 
 add_custom_target(
     run-exe
-    COMMAND mandelbulb-generator_exe
+    COMMAND mandelbulb-generator-opengl_exe
     VERBATIM
 )
-add_dependencies(run-exe mandelbulb-generator_exe)
+add_dependencies(run-exe mandelbulb-generator-opengl_exe)
 
 include(cmake/lint-targets.cmake)
 

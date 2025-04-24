@@ -14,7 +14,7 @@ include(Catch)
 add_executable(mandelbulb-generator_test source/mandelbulb-generator_test.cpp)
 target_link_libraries(
     mandelbulb-generator_test PRIVATE
-    mandelbulb-generator_lib
+    mandelbulb-generator-opengl_lib
     Catch2::Catch2WithMain
 )
 target_compile_features(mandelbulb-generator_test PRIVATE cxx_std_20)

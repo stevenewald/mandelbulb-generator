@@ -1,5 +1,5 @@
 install(
-    TARGETS mandelbulb-generator_exe
+    TARGETS mandelbulb-generator-opengl_exe
     RUNTIME COMPONENT mandelbulb-generator_Runtime
 )
 

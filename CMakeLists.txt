@@ -21,7 +21,7 @@ add_compile_definitions(GLFW_INCLUDE_NONE)
 
 
 add_library(
-    mandelbulb-generator_lib OBJECT
+    mandelbulb-generator-opengl_lib OBJECT
     source/opengl/lib.cpp
 	source/opengl/handles/glfw_context_handle.cpp
 	source/opengl/util.cpp
@@ -33,47 +33,47 @@ add_library(
 )
 
 target_include_directories(
-    mandelbulb-generator_lib ${warning_guard}
+    mandelbulb-generator-opengl_lib ${warning_guard}
     PUBLIC
     "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source/opengl>"
 )
 
-target_compile_features(mandelbulb-generator_lib PUBLIC cxx_std_20)
+target_compile_features(mandelbulb-generator-opengl_lib PUBLIC cxx_std_20)
 
 # fmt - text formatting
 find_package(fmt REQUIRED)
-target_link_libraries(mandelbulb-generator_lib PRIVATE fmt::fmt)
+target_link_libraries(mandelbulb-generator-opengl_lib PRIVATE fmt::fmt)
 
 # glfw - opengl
 find_package(glfw3 REQUIRED)
-target_link_libraries(mandelbulb-generator_lib PRIVATE glfw)
+target_link_libraries(mandelbulb-generator-opengl_lib PRIVATE glfw)
 
 # stb - image loading
 find_package(stb REQUIRED)
-target_link_libraries(mandelbulb-generator_lib PRIVATE stb::stb)
+target_link_libraries(mandelbulb-generator-opengl_lib PRIVATE stb::stb)
 
 # glm - math
 find_package(glm REQUIRED)
-target_link_libraries(mandelbulb-generator_lib PRIVATE glm::glm)
+target_link_libraries(mandelbulb-generator-opengl_lib PRIVATE glm::glm)
 
 # glad - exposes function pointers to opengl functions
 find_package(glad REQUIRED)
-target_link_libraries(mandelbulb-generator_lib PRIVATE glad::glad)
+target_link_libraries(mandelbulb-generator-opengl_lib PRIVATE glad::glad)
 
 # bgfx - cross-platform graphics api
 find_package(bgfx REQUIRED)
-target_link_libraries(mandelbulb-generator_lib PRIVATE bgfx::bgfx)
+target_link_libraries(mandelbulb-generator-opengl_lib PRIVATE bgfx::bgfx)
 
 # ---- Declare executable ----
 
-add_executable(mandelbulb-generator_exe source/opengl/main.cpp)
-add_executable(mandelbulb-generator::exe ALIAS mandelbulb-generator_exe)
+add_executable(mandelbulb-generator-opengl_exe source/opengl/main.cpp)
+add_executable(mandelbulb-generator::exe ALIAS mandelbulb-generator-opengl_exe)
 
-set_property(TARGET mandelbulb-generator_exe PROPERTY OUTPUT_NAME mandelbulb-generator)
+set_property(TARGET mandelbulb-generator-opengl_exe PROPERTY OUTPUT_NAME mandelbulb-generator)
 
-target_compile_features(mandelbulb-generator_exe PRIVATE cxx_std_20)
+target_compile_features(mandelbulb-generator-opengl_exe PRIVATE cxx_std_20)
 
-target_link_libraries(mandelbulb-generator_exe PRIVATE mandelbulb-generator_lib)
+target_link_libraries(mandelbulb-generator-opengl_exe PRIVATE mandelbulb-generator-opengl_lib)
 
 # ---- Install rules ----
 
