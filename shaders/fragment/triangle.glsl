@@ -29,11 +29,11 @@ palette(float t, vec3 a, vec3 b, vec3 c, vec3 d)
 vec4
 colorForQ(int steps)
 {
-    float t = clamp(float(steps) / 14, 0.0, 1.0);
+    float t = float(steps);
     // tweak these to taste:
     vec3 A = vec3(0.8, .5, .4);
     vec3 B = vec3(0.2, .4, .2);
-    vec3 C = vec3(2.0, 1.0, 1.0);
+    vec3 C = vec3(2.0 / 14, 1.0 / 14, 1.0 / 14);
     vec3 D = vec3(0, .25, .25);
     return vec4(palette(t, A, B, C, D), 1.0);
 }
@@ -128,6 +128,29 @@ softshadow(vec3 ro, vec3 rd)
     return clamp(res, 0.6, 1.0);
 }
 
+#define AO_SAMPLES 8
+#define AO_STEP    0.10
+#define AO_DECAY   0.71
+
+float
+ambientocclusion(vec3 ro, vec3 normal)
+{
+    float occlusion = 0.0;
+    float weight = 1.0;
+
+    // march out along the normal, sampling scene distance
+    for (int i = 1; i <= AO_SAMPLES; ++i) {
+        float dist = AO_STEP * float(i);
+        float sceneD = mapDistance(ro + normal * dist);
+        // accumulate how much the geometry encroaches into the sample sphere
+        occlusion += (dist - sceneD) * weight;
+        weight *= AO_DECAY;
+    }
+
+    // invert and clamp to [0,1]
+    return clamp(1.0 - pow(occlusion, 5), 0.5, 1.0);
+}
+
 void
 main()
 {
@@ -136,14 +159,15 @@ main()
     // assemble ray
     vec3 rd = normalize(xy.x * right + xy.y * up + z);
     int p_steps = 0;
-
     float dist = trace(camPos, rd, p_steps);
     if (dist < MAX_DIST) {
         vec3 p = camPos + rd * dist;
         vec3 n = estimateNormal(p);
         float sh = softshadow(p + n * EPSILON * 5.0, sunDirection);
+        float ao = ambientocclusion(p + n * EPSILON * 5.0, n);
         fragColor = colorForQ(p_steps);
         fragColor.xyz *= sh;
+        fragColor.xyz *= ao;
         return;
     }
 
