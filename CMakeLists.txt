@@ -22,20 +22,20 @@ add_compile_definitions(GLFW_INCLUDE_NONE)
 
 add_library(
     mandelbulb-generator_lib OBJECT
-    source/lib.cpp
-	source/handles/glfw_context_handle.cpp
-	source/util.cpp
-	source/shader.cpp
-	source/program.cpp
-	source/camera.cpp
-	source/camera_ubo.cpp
-	source/cubemap.cpp
+    source/opengl/lib.cpp
+	source/opengl/handles/glfw_context_handle.cpp
+	source/opengl/util.cpp
+	source/opengl/shader.cpp
+	source/opengl/program.cpp
+	source/opengl/camera.cpp
+	source/opengl/camera_ubo.cpp
+	source/opengl/cubemap.cpp
 )
 
 target_include_directories(
     mandelbulb-generator_lib ${warning_guard}
     PUBLIC
-    "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>"
+    "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source/opengl>"
 )
 
 target_compile_features(mandelbulb-generator_lib PUBLIC cxx_std_20)
@@ -60,29 +60,13 @@ target_link_libraries(mandelbulb-generator_lib PRIVATE glm::glm)
 find_package(glad REQUIRED)
 target_link_libraries(mandelbulb-generator_lib PRIVATE glad::glad)
 
-# ---- Imgui Bindings ----
-add_library(
-	imgui-bindings_lib
-	bindings/imgui_impl_glfw.cpp
-	bindings/imgui_impl_opengl3.cpp
-)
-
-target_include_directories(
-    imgui-bindings_lib ${warning_guard}
-    PUBLIC
-    "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/bindings>"
-)
-
-find_package(imgui REQUIRED)
-target_link_libraries(imgui-bindings_lib PUBLIC imgui::imgui)
-target_link_libraries(imgui-bindings_lib PRIVATE glfw)
-
-target_link_libraries(mandelbulb-generator_lib PRIVATE imgui-bindings_lib)
-
+# bgfx - cross-platform graphics api
+find_package(bgfx REQUIRED)
+target_link_libraries(mandelbulb-generator_lib PRIVATE bgfx::bgfx)
 
 # ---- Declare executable ----
 
-add_executable(mandelbulb-generator_exe source/main.cpp)
+add_executable(mandelbulb-generator_exe source/opengl/main.cpp)
 add_executable(mandelbulb-generator::exe ALIAS mandelbulb-generator_exe)
 
 set_property(TARGET mandelbulb-generator_exe PROPERTY OUTPUT_NAME mandelbulb-generator)
