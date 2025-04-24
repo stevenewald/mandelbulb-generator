@@ -6,11 +6,18 @@ if(BUILD_TESTING)
 endif()
 
 add_custom_target(
-    run-exe
+    run-opengl-exe
     COMMAND mandelbulb-generator-opengl_exe
     VERBATIM
 )
-add_dependencies(run-exe mandelbulb-generator-opengl_exe)
+
+add_custom_target(
+    run-bgfx-exe
+    COMMAND mandelbulb-generator-opengl_exe
+    VERBATIM
+)
+add_dependencies(run-opengl-exe mandelbulb-generator-opengl_exe)
+add_dependencies(run-bgfx-exe mandelbulb-generator-bgfx_exe)
 
 include(cmake/lint-targets.cmake)
 

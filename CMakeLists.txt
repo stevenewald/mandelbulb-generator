@@ -17,7 +17,7 @@ set(BUILD_SHARED_LIBS OFF)
 
 add_compile_definitions(GLFW_INCLUDE_NONE)
 
-# ---- Declare library ----
+# ---- Declare OpenGL library ----
 
 
 add_library(
@@ -60,20 +60,47 @@ target_link_libraries(mandelbulb-generator-opengl_lib PRIVATE glm::glm)
 find_package(glad REQUIRED)
 target_link_libraries(mandelbulb-generator-opengl_lib PRIVATE glad::glad)
 
-# bgfx - cross-platform graphics api
-find_package(bgfx REQUIRED)
-target_link_libraries(mandelbulb-generator-opengl_lib PRIVATE bgfx::bgfx)
-
-# ---- Declare executable ----
+# ---- Declare OpenGL executable ----
 
 add_executable(mandelbulb-generator-opengl_exe source/opengl/main.cpp)
-add_executable(mandelbulb-generator::exe ALIAS mandelbulb-generator-opengl_exe)
+add_executable(mandelbulb-generator-opengl::exe ALIAS mandelbulb-generator-opengl_exe)
 
-set_property(TARGET mandelbulb-generator-opengl_exe PROPERTY OUTPUT_NAME mandelbulb-generator)
+set_property(TARGET mandelbulb-generator-opengl_exe PROPERTY OUTPUT_NAME mandelbulb-generator-opengl)
 
 target_compile_features(mandelbulb-generator-opengl_exe PRIVATE cxx_std_20)
 
 target_link_libraries(mandelbulb-generator-opengl_exe PRIVATE mandelbulb-generator-opengl_lib)
+
+# ---- Declare BGFX library ----
+
+
+add_library(
+    mandelbulb-generator-bgfx_lib OBJECT
+    source/bgfx/lib.cpp
+)
+
+target_include_directories(
+    mandelbulb-generator-bgfx_lib ${warning_guard}
+    PUBLIC
+    "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source/bgfx>"
+)
+
+target_compile_features(mandelbulb-generator-bgfx_lib PUBLIC cxx_std_20)
+
+# bgfx - cross-platform graphics api
+find_package(bgfx REQUIRED)
+target_link_libraries(mandelbulb-generator-bgfx_lib PRIVATE bgfx::bgfx)
+
+# ---- Declare BGFX executable ----
+
+add_executable(mandelbulb-generator-bgfx_exe source/bgfx/main.cpp)
+add_executable(mandelbulb-generator-bgfx::exe ALIAS mandelbulb-generator-bgfx_exe)
+
+set_property(TARGET mandelbulb-generator-bgfx_exe PROPERTY OUTPUT_NAME mandelbulb-generator-bgfx)
+
+target_compile_features(mandelbulb-generator-bgfx_exe PRIVATE cxx_std_20)
+
+target_link_libraries(mandelbulb-generator-bgfx_exe PRIVATE mandelbulb-generator-bgfx_lib)
 
 # ---- Install rules ----
 
