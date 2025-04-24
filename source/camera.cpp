@@ -4,6 +4,8 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <iostream>
+
 namespace fractal {
 void
 Camera::modify_yaw(float delta)
@@ -27,33 +29,37 @@ bool
 Camera::process_input(GLFWwindow* window)
 {
     bool input_processed = false;
+    float delta = DELTA;
 
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        delta *= 10;
+    }
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
         input_processed = true;
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        modify_yaw(DELTA);
+        modify_yaw(delta);
         input_processed = true;
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        modify_yaw(-DELTA);
+        modify_yaw(-delta);
         input_processed = true;
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        modify_pitch(-DELTA);
+        modify_pitch(-delta);
         input_processed = true;
     }
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        modify_pitch(DELTA);
+        modify_pitch(delta);
         input_processed = true;
     }
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-        modify_radius(-DELTA);
+        modify_radius(-delta);
         input_processed = true;
     }
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-        modify_radius(DELTA);
+        modify_radius(delta);
         input_processed = true;
     }
 
