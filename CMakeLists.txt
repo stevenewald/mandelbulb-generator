@@ -99,6 +99,8 @@ add_executable(mandelbulb-generator-bgfx::exe ALIAS mandelbulb-generator-bgfx_ex
 set_property(TARGET mandelbulb-generator-bgfx_exe PROPERTY OUTPUT_NAME mandelbulb-generator-bgfx)
 
 target_compile_features(mandelbulb-generator-bgfx_exe PRIVATE cxx_std_20)
+target_link_libraries(mandelbulb-generator-bgfx_exe PRIVATE bgfx::bgfx)
+target_link_libraries(mandelbulb-generator-bgfx_exe PRIVATE glfw)
 
 target_link_libraries(mandelbulb-generator-bgfx_exe PRIVATE mandelbulb-generator-bgfx_lib)
 

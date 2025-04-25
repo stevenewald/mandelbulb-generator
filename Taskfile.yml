@@ -36,7 +36,7 @@ tasks:
       PATH: '{{if eq .RELEASE_BUILD "true"}}build/{{.NAME}}{{else}}build/dev/{{.NAME}}{{end}}'
     cmds:
       - task: build
-      - ./{{ .PATH }}
+      - ./{{ .PATH }}-bgfx
 
   test:
     dir: '{{if eq .RELEASE_BUILD "true"}}./build{{else}}.{{end}}'
