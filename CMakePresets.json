@@ -100,10 +100,7 @@
       "name": "ci-darwin",
       "inherits": ["flags-appleclang", "ci-std"],
       "generator": "Unix Makefiles",
-      "hidden": true,
-      "cacheVariables": {
-        "CMAKE_CATCH_DISCOVER_TESTS_DISCOVERY_MODE": "PRE_TEST"
-      }
+      "hidden": true
     },
     {
       "name": "ci-win64",

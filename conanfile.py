@@ -17,9 +17,6 @@ class Recipe(ConanFile):
         self.requires("glm/1.0.1")
         self.requires("stb/cci.20240531")
 
-    def build_requirements(self):
-        self.test_requires("catch2/3.7.0")
-
     def configure(self):
         self.options["fmt"].shared=False
         self.options["glfw"].shared=False

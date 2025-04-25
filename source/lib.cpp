@@ -15,8 +15,6 @@
 #include <string>
 #include <thread>
 
-library::library() : name{fmt::format("{}", "mandelbulb-generator")} {}
-
 fractal::Camera camera{};
 
 constexpr float WIDTH = 800.0f;
