@@ -4,8 +4,6 @@
 
 #include <GLFW/glfw3.h>
 
-#include <iostream>
-#include <memory>
 #include <stdexcept>
 
 namespace fractal {
@@ -27,10 +25,13 @@ create_window_handle(
         throw std::runtime_error("Failed to create GLFW window");
     }
     glfwMakeContextCurrent(window);
-    // Load OpenGL functions with GLAD
+
+#ifndef __EMSCRIPTEN__
     if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0) {
         throw std::runtime_error("Failed to initialize GLAD");
     }
+#endif
+
     return {window, &glfwDestroyWindow};
 }
 

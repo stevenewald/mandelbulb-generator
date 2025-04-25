@@ -9,15 +9,26 @@
 #include "handles/program.hpp"
 
 namespace fractal {
+
+void
+create_dummy_attribute_array()
+{
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+    glEnableVertexAttribArray(0);
+    glVertexAttrib2f(0, 0.0f, 0.0f);
+    glBindVertexArray(0);
+}
+
 Program
-create_fractal_program()
+create_fractal_program(
+    const std::filesystem::path& vertex, const std::filesystem::path& fragment
+)
 {
     unsigned int vao{};
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
-
-    std::filesystem::path vertex = "shaders/vertex/single_triangle.glsl";
-    std::filesystem::path fragment = "shaders/fragment/mandelbulb.glsl";
 
     return Program{vertex, fragment};
 }
@@ -26,7 +37,7 @@ struct app {
     GlfwContextHandle glfw_context;
     GlfwWindowHandle glfw_window =
         create_window_handle(WIDTH, HEIGHT, "Mandelbulb", nullptr, nullptr);
-    Program program = create_fractal_program();
+    Program program = create_fractal_program(VERTEX_PATH, FRAGMENT_PATH);
     Camera camera{START_YAW};
     CameraUBO camera_ubo;
     Cubemap cube{CUBEMAP_IMAGES};

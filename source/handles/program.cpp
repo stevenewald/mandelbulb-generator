@@ -1,7 +1,8 @@
 #include "handles/program.hpp"
 
+#include "opengl_bindings.hpp"
+
 #include <fmt/format.h>
-#include <glad/glad.h>
 
 #include <array>
 #include <filesystem>
@@ -34,6 +35,7 @@ Program::Program(
 {
     glAttachShader(SHADER_PROGRAM, vertex_shader_.get_id());
     glAttachShader(SHADER_PROGRAM, fragment_shader_.get_id());
+    glBindAttribLocation(SHADER_PROGRAM, 0, "dummy");
     glLinkProgram(SHADER_PROGRAM);
     check_link_error(SHADER_PROGRAM);
 }

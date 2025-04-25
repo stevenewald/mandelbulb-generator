@@ -1,13 +1,15 @@
 #include "handles/shader.hpp"
 
+#include "opengl_bindings.hpp"
+
 #include <fmt/format.h>
-#include <glad/glad.h>
 
 #include <cstdint>
 
 #include <array>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <stdexcept>
 
 namespace fractal {

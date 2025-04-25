@@ -1,8 +1,7 @@
 #include "camera_ubo.hpp"
 
 #include "camera.hpp"
-
-#include <glad/glad.h>
+#include "opengl_bindings.hpp"
 
 namespace fractal {
 
