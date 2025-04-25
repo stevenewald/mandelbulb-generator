@@ -1,7 +1,6 @@
 #pragma once
 
 #include "camera.hpp"
-#include "program.hpp"
 
 #include <glm/glm.hpp>
 
@@ -9,7 +8,7 @@ namespace fractal {
 
 class CameraUBO {
 public:
-    struct CameraData {
+    struct camera_data {
         alignas(16) glm::vec3 campos;
         alignas(16) glm::vec3 right;
         alignas(16) glm::vec3 up;
@@ -18,16 +17,17 @@ public:
     };
 
     CameraUBO();
+    CameraUBO(const CameraUBO&) = delete;
+    CameraUBO(CameraUBO&&) = delete;
+    CameraUBO& operator=(const CameraUBO&) = delete;
+    CameraUBO& operator=(CameraUBO&&) = delete;
     ~CameraUBO();
 
-    void update(const Camera::ray_args& args);
-    void bind(GLuint bindingPoint = 0) const;
-    void attachToShader(
-        const Program& program, const std::string& blockName, GLuint bindingPoint = 0
-    ) const;
+    void update(const Camera::ray_args& args) const;
+    void bind(unsigned int binding_point = 0) const;
 
 private:
-    GLuint ubo_;
+    unsigned int ubo_{};
 };
 
 } // namespace fractal

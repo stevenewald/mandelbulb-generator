@@ -2,8 +2,7 @@
 in vec2 pos;
 out vec4 fragColor;
 
-uniform vec2 iResolution;
-uniform float iTime;
+uniform vec2 resolution;
 uniform samplerCube skybox;
 
 uniform CameraData
@@ -154,7 +153,7 @@ ambientocclusion(vec3 ro, vec3 normal)
 void
 main()
 {
-    vec2 xy = pos.xy - iResolution.xy * 0.5;
+    vec2 xy = pos.xy - resolution.xy * 0.5;
 
     // assemble ray
     vec3 rd = normalize(xy.x * right + xy.y * up + z);

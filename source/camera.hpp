@@ -12,9 +12,11 @@ class Camera {
     static constexpr float DELTA = 0.001f;
     float radius_ = 4.0f;
     float pitch_ = 0.0001f;
-    float yaw_ = 0.0f;
+    float yaw_;
 
 public:
+    explicit Camera(float start_yaw = 0.0f) : yaw_{start_yaw} {}
+
     void modify_yaw(float delta);
     void modify_pitch(float delta);
     void modify_radius(float delta);

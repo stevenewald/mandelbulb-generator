@@ -11,7 +11,7 @@
 
 namespace fractal {
 Program
-run_program()
+create_fractal_program()
 {
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
