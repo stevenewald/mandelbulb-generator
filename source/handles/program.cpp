@@ -1,11 +1,10 @@
-#include "program.hpp"
+#include "handles/program.hpp"
 
 #include <fmt/format.h>
 #include <glad/glad.h>
 
 #include <array>
 #include <filesystem>
-#include <span>
 #include <stdexcept>
 
 namespace fractal {
@@ -49,17 +48,17 @@ unsigned int
 Program::get_uniform_block_location(const char* name) const
 {
     unsigned int index = glGetUniformBlockIndex(SHADER_PROGRAM, name);
-    if (index == GL_INVALID_INDEX) {
+    if (index == GL_INVALID_OPERATION) {
         throw std::runtime_error(fmt::format("Unable to find block index {}", name));
     }
     return index;
 }
 
-unsigned int
+int
 Program::get_uniform_location(const char* name) const
 {
-    unsigned int index = glGetUniformLocation(SHADER_PROGRAM, name);
-    if (index == GL_INVALID_INDEX) {
+    int index = glGetUniformLocation(SHADER_PROGRAM, name);
+    if (index == GL_INVALID_VALUE) {
         throw std::runtime_error(fmt::format("Unable to find block index {}", name));
     }
     return index;

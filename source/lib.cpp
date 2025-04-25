@@ -3,11 +3,8 @@
 #include "camera.hpp"
 #include "camera_ubo.hpp"
 #include "config.hpp"
-#include "cubemap.hpp"
-#include "handles/glfw_context_handle.hpp"
-#include "handles/glfw_window_handle.hpp"
+#include "handles/cubemap.hpp"
 #include "initialization.hpp"
-#include "triangle.hpp"
 
 #include <fmt/core.h>
 #include <glad/glad.h>
@@ -21,13 +18,8 @@ void
 run()
 {
     app app{};
-
     app.program.use();
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    loadCubemap({"px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"});
     initialize_uniforms(app.program);
 
     bool fst = true;
@@ -42,7 +34,7 @@ run()
         }
         fst = false;
 
-        app.camera_ubo.update(app.camera.get_args(HEIGHT));
+        app.camera_ubo.update(app.camera.get_args(HEIGHT, FOV));
         app.camera_ubo.bind();
 
         // Clear the screen with a red background.

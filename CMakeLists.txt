@@ -24,12 +24,12 @@ add_library(
     mandelbulb-generator_lib OBJECT
     source/lib.cpp
 	source/handles/glfw_context_handle.cpp
-	source/util.cpp
-	source/shader.cpp
-	source/program.cpp
+	source/handles/shader.cpp
+	source/handles/program.cpp
 	source/camera.cpp
 	source/camera_ubo.cpp
-	source/cubemap.cpp
+	source/handles/cubemap.cpp
+	source/handles/image.cpp
 )
 
 target_include_directories(

@@ -4,8 +4,6 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <iostream>
-
 namespace fractal {
 void
 Camera::modify_yaw(float delta)
@@ -66,26 +64,29 @@ Camera::process_input(GLFWwindow* window)
     return input_processed;
 }
 
-Camera::ray_args
-Camera::get_args(float y_res) const
+Camera::camera_args
+Camera::get_args(float y_res, float fov) const
 {
-    glm::vec3 camPos{};
-    camPos.x = radius_ * cosf(pitch_) * sinf(yaw_);
-    camPos.y = radius_ * sinf(pitch_);
-    camPos.z = radius_ * cosf(pitch_) * cosf(yaw_);
+    Camera::camera_args args{};
 
-    glm::vec3 target = glm::vec3(0.0f);
-    glm::vec3 forward = glm::normalize(target - camPos); // view direction
-    glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-    glm::vec3 right = glm::normalize(glm::cross(forward, worldUp)); // camera X
-    glm::vec3 up = glm::cross(right, forward);                      // camera Y
+    args.camera_position[0] = radius_ * cosf(pitch_) * sinf(yaw_);
+    args.camera_position[1] = radius_ * sinf(pitch_);
+    args.camera_position[2] = radius_ * cosf(pitch_) * cosf(yaw_);
 
-    float fov = glm::radians(60.0f);
-    float zPlane = y_res / tanf(fov * 0.5f);
-    glm::vec3 z = zPlane * forward;
+    glm::vec3 target{};
+    glm::vec3 camera_forward =
+        glm::normalize(target - args.camera_position); // view direction
+    glm::vec3 world_up = glm::vec3(0.0f, 1.0f, 0.0f);
+    args.camera_right =
+        glm::normalize(glm::cross(camera_forward, world_up));       // camera X
+    args.camera_up = glm::cross(args.camera_right, camera_forward); // camera Y
 
-    glm::vec3 sun = {1, .1, .2};
-    sun = glm::normalize(sun);
-    return {camPos, right, up, z, sun};
+    float fov_rads = glm::radians(fov);
+    float z_plane = y_res / tanf(fov_rads * 0.5f);
+    args.image_plane_center = z_plane * camera_forward;
+
+    args.sun_direction = glm::normalize(glm::vec3{1, .1, .2});
+
+    return args;
 }
 } // namespace fractal

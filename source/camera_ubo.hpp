@@ -7,15 +7,9 @@
 namespace fractal {
 
 class CameraUBO {
-public:
-    struct camera_data {
-        alignas(16) glm::vec3 campos;
-        alignas(16) glm::vec3 right;
-        alignas(16) glm::vec3 up;
-        alignas(16) glm::vec3 z;
-        alignas(16) glm::vec3 sun_direction;
-    };
+    unsigned int ubo_{};
 
+public:
     CameraUBO();
     CameraUBO(const CameraUBO&) = delete;
     CameraUBO(CameraUBO&&) = delete;
@@ -23,11 +17,8 @@ public:
     CameraUBO& operator=(CameraUBO&&) = delete;
     ~CameraUBO();
 
-    void update(const Camera::ray_args& args) const;
+    void update(const Camera::camera_args& args) const;
     void bind(unsigned int binding_point = 0) const;
-
-private:
-    unsigned int ubo_{};
 };
 
 } // namespace fractal

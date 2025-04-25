@@ -1,5 +1,5 @@
 #pragma once
-#include "shader.hpp"
+#include "handles/shader.hpp"
 
 namespace fractal {
 class Program {
@@ -15,7 +15,7 @@ public:
 
     void use() const;
 
-    unsigned int get_uniform_location(const char* name) const;
+    int get_uniform_location(const char* name) const;
     unsigned int get_uniform_block_location(const char* name) const;
 
     unsigned int

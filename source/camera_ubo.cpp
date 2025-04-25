@@ -1,5 +1,7 @@
 #include "camera_ubo.hpp"
 
+#include "camera.hpp"
+
 #include <glad/glad.h>
 
 namespace fractal {
@@ -8,7 +10,9 @@ CameraUBO::CameraUBO()
 {
     glGenBuffers(1, &ubo_);
     glBindBuffer(GL_UNIFORM_BUFFER, ubo_);
-    glBufferData(GL_UNIFORM_BUFFER, sizeof(camera_data), nullptr, GL_DYNAMIC_DRAW);
+    glBufferData(
+        GL_UNIFORM_BUFFER, sizeof(Camera::camera_args), nullptr, GL_DYNAMIC_DRAW
+    );
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
@@ -18,12 +22,10 @@ CameraUBO::~CameraUBO()
 }
 
 void
-CameraUBO::update(const Camera::ray_args& args) const
+CameraUBO::update(const Camera::camera_args& args) const
 {
-    camera_data data{args.campos, args.right, args.up, args.z, args.sun_direction};
-
     glBindBuffer(GL_UNIFORM_BUFFER, ubo_);
-    glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(camera_data), &data);
+    glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Camera::camera_args), &args);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 

@@ -5,8 +5,6 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <array>
-
 namespace fractal {
 class Camera {
     static constexpr float DELTA = 0.001f;
@@ -23,14 +21,14 @@ public:
 
     bool process_input(GLFWwindow* window);
 
-    struct ray_args {
-        glm::vec3 campos;
-        glm::vec3 right;
-        glm::vec3 up;
-        glm::vec3 z;
-        glm::vec3 sun_direction;
+    struct camera_args {
+        alignas(16) glm::vec3 camera_position;
+        alignas(16) glm::vec3 camera_right;
+        alignas(16) glm::vec3 camera_up;
+        alignas(16) glm::vec3 image_plane_center;
+        alignas(16) glm::vec3 sun_direction;
     };
 
-    ray_args get_args(float y_res) const;
+    camera_args get_args(float y_res, float fov) const;
 };
 } // namespace fractal

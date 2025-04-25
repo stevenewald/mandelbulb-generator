@@ -1,6 +1,6 @@
 #pragma once
 
-#include "shader.hpp"
+#include "handles/shader.hpp"
 
 #include <GLFW/glfw3.h>
 

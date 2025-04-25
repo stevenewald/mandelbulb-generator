@@ -1,16 +1,14 @@
 #include "glfw_context_handle.hpp"
 
-#include "util.hpp"
-
 #include <GLFW/glfw3.h>
 
-#include <iostream>
+#include <stdexcept>
 
 namespace fractal {
 GlfwContextHandle::GlfwContextHandle()
 {
     if (glfwInit() == GLFW_FALSE) {
-        fatal_error("Failed to initialize glfw");
+        throw std::runtime_error("Failed to initialize glfw");
     }
 
     // OpenGL 3.3 Core
