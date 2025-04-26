@@ -18,7 +18,6 @@ void
 setup()
 {
     APP->program.use();
-
     initialize_uniforms(APP->program);
 }
 
@@ -27,13 +26,19 @@ tick()
 {
     static bool has_run = false;
     glfwPollEvents();
-    if (!APP->camera.process_input(APP->glfw_window.get()) && has_run) {
+    APP->glfw_window.on_first();
+    if (!APP->camera.process_input(APP->glfw_window.get_window()) && has_run) {
         return;
     }
     has_run = true;
 
-    APP->camera_ubo.update(APP->camera.get_args(HEIGHT, FOV));
+    APP->camera_ubo.update(APP->camera.get_args(APP->glfw_window.get_width(), FOV));
     APP->camera_ubo.bind();
+
+    int vertex_res_location = APP->program.get_uniform_location("resolution");
+    glUniform2f(
+        vertex_res_location, APP->glfw_window.get_width(), APP->glfw_window.get_height()
+    );
 
     // Clear the screen with a red background.
     glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
@@ -42,13 +47,13 @@ tick()
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
     // Swap buffers to display the rendered frame.
-    glfwSwapBuffers(APP->glfw_window.get());
+    glfwSwapBuffers(APP->glfw_window.get_window());
 }
 
 void
 run_forever()
 {
-    while (!glfwWindowShouldClose(APP->glfw_window.get())) {
+    while (!glfwWindowShouldClose(APP->glfw_window.get_window())) {
         tick();
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }

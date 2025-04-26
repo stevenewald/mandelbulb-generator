@@ -37,9 +37,10 @@ tasks:
     dir: .
     vars:
       PATH: '{{if eq .RELEASE_BUILD "True"}}build/{{.NAME}}{{else}}build/dev/{{.NAME}}{{end}}'
+      CMD: '{{if eq .WEB_BUILD "True"}}emrun --browser chrome --port 8080 {{ .PATH}}.html{{else}}./{{ .PATH }}{{end}}'
     cmds:
       - task: build
-      - ./{{ .PATH }}
+      - true && {{ .CMD }}
 
   fmt:
     dir: .
