@@ -9,24 +9,34 @@
 #include "handles/program.hpp"
 
 namespace fractal {
+
+void
+create_dummy_attribute_array()
+{
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+    glEnableVertexAttribArray(0);
+    glVertexAttrib2f(0, 0.0f, 0.0f);
+    glBindVertexArray(0);
+}
+
 Program
-create_fractal_program()
+create_fractal_program(
+    const std::filesystem::path& vertex, const std::filesystem::path& fragment
+)
 {
     unsigned int vao{};
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
-
-    std::filesystem::path vertex = "shaders/vertex/single_triangle.glsl";
-    std::filesystem::path fragment = "shaders/fragment/mandelbulb.glsl";
 
     return Program{vertex, fragment};
 }
 
 struct app {
     GlfwContextHandle glfw_context;
-    GlfwWindowHandle glfw_window =
-        create_window_handle(WIDTH, HEIGHT, "Mandelbulb", nullptr, nullptr);
-    Program program = create_fractal_program();
+    GlfwWindowHandle glfw_window{WIDTH, HEIGHT, "Mandelbulb", nullptr, nullptr};
+    Program program = create_fractal_program(VERTEX_PATH, FRAGMENT_PATH);
     Camera camera{START_YAW};
     CameraUBO camera_ubo;
     Cubemap cube{CUBEMAP_IMAGES};
@@ -35,9 +45,6 @@ struct app {
 void
 initialize_uniforms(const Program& program)
 {
-    int vertex_res_location = program.get_uniform_location("resolution");
-    glUniform2f(vertex_res_location, WIDTH, HEIGHT);
-
     int vertex_skybox_location = program.get_uniform_location("skybox");
     glUniform1i(vertex_skybox_location, 0);
 }

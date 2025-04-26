@@ -2,5 +2,7 @@
 
 namespace fractal {
 
-void run();
+void tick();
+void run_forever();
+void setup();
 } // namespace fractal

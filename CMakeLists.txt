@@ -10,6 +10,10 @@ project(
     LANGUAGES CXX
 )
 
+if(EMSCRIPTEN)
+  message(STATUS "Configuring for Emscripten / WebAssembly")
+endif()
+
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 
@@ -44,9 +48,17 @@ target_compile_features(mandelbulb-generator_lib PUBLIC cxx_std_20)
 find_package(fmt REQUIRED)
 target_link_libraries(mandelbulb-generator_lib PRIVATE fmt::fmt)
 
-# glfw - opengl
-find_package(glfw3 REQUIRED)
-target_link_libraries(mandelbulb-generator_lib PRIVATE glfw)
+if(NOT EMSCRIPTEN)
+  # glfw - opengl
+  find_package(glfw3 REQUIRED)
+  target_link_libraries(mandelbulb-generator_lib PRIVATE glfw)
+
+  # glad - exposes function pointers to opengl functions
+  find_package(glad REQUIRED)
+  target_link_libraries(mandelbulb-generator_lib PRIVATE glad::glad)
+else()
+  # Emscripten bundles its own GLFW/WebGL2 port
+endif()
 
 # stb - image loading
 find_package(stb REQUIRED)
@@ -55,29 +67,6 @@ target_link_libraries(mandelbulb-generator_lib PRIVATE stb::stb)
 # glm - math
 find_package(glm REQUIRED)
 target_link_libraries(mandelbulb-generator_lib PRIVATE glm::glm)
-
-# glad - exposes function pointers to opengl functions
-find_package(glad REQUIRED)
-target_link_libraries(mandelbulb-generator_lib PRIVATE glad::glad)
-
-# ---- Imgui Bindings ----
-add_library(
-	imgui-bindings_lib
-	bindings/imgui_impl_glfw.cpp
-	bindings/imgui_impl_opengl3.cpp
-)
-
-target_include_directories(
-    imgui-bindings_lib ${warning_guard}
-    PUBLIC
-    "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/bindings>"
-)
-
-find_package(imgui REQUIRED)
-target_link_libraries(imgui-bindings_lib PUBLIC imgui::imgui)
-target_link_libraries(imgui-bindings_lib PRIVATE glfw)
-
-target_link_libraries(mandelbulb-generator_lib PRIVATE imgui-bindings_lib)
 
 
 # ---- Declare executable ----
@@ -90,6 +79,25 @@ set_property(TARGET mandelbulb-generator_exe PROPERTY OUTPUT_NAME mandelbulb-gen
 target_compile_features(mandelbulb-generator_exe PRIVATE cxx_std_20)
 
 target_link_libraries(mandelbulb-generator_exe PRIVATE mandelbulb-generator_lib)
+
+if(EMSCRIPTEN)
+	set_target_properties(mandelbulb-generator_exe PROPERTIES SUFFIX ".html")
+	target_link_options(mandelbulb-generator_exe PRIVATE
+    # JavaScript port of GLFW3
+    "-sUSE_GLFW=3"
+	"--embed-file=${CMAKE_SOURCE_DIR}/shaders/fragment/mandelbulb_es.glsl@/shaders/fragment/mandelbulb_es.glsl"
+    "--embed-file=${CMAKE_SOURCE_DIR}/shaders/vertex/single_triangle_es.glsl@/shaders/vertex/single_triangle_es.glsl"
+    "--embed-file=${CMAKE_SOURCE_DIR}/images/@/images"
+    # WebGL2 / ES3 support
+    "-sMAX_WEBGL_VERSION=2"
+    "-sMIN_WEBGL_VERSION=2"
+    # Embind & modularize
+    "-lembind"
+    # "-sMODULARIZE=1"
+    "-sASSERTIONS=1"
+	"-sEXCEPTION_CATCHING_ALLOWED=[..]"
+  )
+endif()
 
 # ---- Install rules ----
 

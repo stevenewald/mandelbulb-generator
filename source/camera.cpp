@@ -4,6 +4,8 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <algorithm>
+
 namespace fractal {
 void
 Camera::modify_yaw(float delta)
@@ -21,6 +23,7 @@ void
 Camera::modify_radius(float delta)
 {
     radius_ += delta;
+    radius_ = std::min(radius_, 4.0f);
 }
 
 bool
@@ -52,11 +55,11 @@ Camera::process_input(GLFWwindow* window)
         modify_pitch(delta);
         input_processed = true;
     }
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
         modify_radius(-delta);
         input_processed = true;
     }
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
         modify_radius(delta);
         input_processed = true;
     }

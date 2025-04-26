@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glad/glad.h>
+#include "opengl_bindings.hpp"
 
 #include <span>
 #include <string>

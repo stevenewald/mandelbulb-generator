@@ -2,41 +2,45 @@ version: '3'
 
 vars:
   NAME: mandelbulb-generator
-  RELEASE_BUILD: "false"
+  RELEASE_BUILD: "True"
+  WEB_BUILD: "True"
   RELEASE_PRESET: "ci-macos"
 
 tasks:
   deps:
     dir: .
+    vars:
+      HOST_CONAN_PROFILE: '{{if eq .WEB_BUILD "True"}}-pr:h emscripten{{else}}{{end}}'
     cmds:
-      - conan install . -s build_type=Debug -b missing -pr cpp23 -pr:b cpp23
-      - conan install . -s build_type=Release -b missing -pr cpp23 -pr:b cpp23
+      - conan install . -pr:b cpp23 {{.HOST_CONAN_PROFILE}} -s build_type=Debug -b missing -o web_build={{.WEB_BUILD}}
+      - conan install . -pr:b cpp23 {{.HOST_CONAN_PROFILE}} -s build_type=Release -b missing -o web_build={{.WEB_BUILD}}
 
   init:
     dir: .
     preconditions:
       - test -f CMakeUserPresets.json
     cmds:
-      - cmake --preset=dev
-      - cmake --preset={{.RELEASE_PRESET}} -DCMAKE_BUILD_TYPE=Release
+      - cmake --preset=dev -DCMAKE_TOOLCHAIN_FILE=conan/conan_toolchain.cmake
+      - cmake --preset={{.RELEASE_PRESET}} -DCMAKE_TOOLCHAIN_FILE=conan/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
 
 
   build:
     dir: .
     vars:
-      CMAKE_SUFFIX: '{{if eq .RELEASE_BUILD "true"}}build --config Release{{else}}--preset=dev{{end}}'
+      CMAKE_SUFFIX: '{{if eq .RELEASE_BUILD "True"}}build --config Release{{else}}--preset=dev{{end}}'
     preconditions:
       - test -f CMakeUserPresets.json
     cmds:
-      - cmake --build {{.CMAKE_SUFFIX}} -j 
+      - cmake --build {{.CMAKE_SUFFIX}} -j
 
   run:
     dir: .
     vars:
-      PATH: '{{if eq .RELEASE_BUILD "true"}}build/{{.NAME}}{{else}}build/dev/{{.NAME}}{{end}}'
+      PATH: '{{if eq .RELEASE_BUILD "True"}}build/{{.NAME}}{{else}}build/dev/{{.NAME}}{{end}}'
+      CMD: '{{if eq .WEB_BUILD "True"}}emrun --browser chrome --port 8080 {{ .PATH}}.html{{else}}./{{ .PATH }}{{end}}'
     cmds:
       - task: build
-      - ./{{ .PATH }}
+      - true && {{ .CMD }}
 
   fmt:
     dir: .

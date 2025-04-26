@@ -1,7 +1,8 @@
 #pragma once
 
+#include "opengl_bindings.hpp"
+
 #include <fmt/format.h>
-#include <glad/glad.h>
 
 #include <cstdint>
 
