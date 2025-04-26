@@ -11,18 +11,7 @@
 
 namespace fractal {
 
-void
-create_dummy_attribute_array()
-{
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-    glEnableVertexAttribArray(0);
-    glVertexAttrib2f(0, 0.0f, 0.0f);
-    glBindVertexArray(0);
-}
-
-Program
+inline Program
 create_fractal_program(
     const std::filesystem::path& vertex, const std::filesystem::path& fragment
 )
@@ -44,7 +33,7 @@ struct app {
     MouseTracker tracker;
 };
 
-void
+inline void
 initialize_uniforms(const Program& program)
 {
     int vertex_skybox_location = program.get_uniform_location("skybox");

@@ -1,4 +1,5 @@
-#version 330 core
+#version 300 es
+precision highp float;
 in vec2 pos;
 out vec4 fragColor;
 
@@ -7,17 +8,17 @@ uniform samplerCube skybox;
 
 uniform CameraData
 {
-    vec3 camPos;
-    vec3 right;
-    vec3 up;
-    vec3 z;
-    vec3 sunDirection;
+    vec3 camera_position;
+    vec3 camera_right;
+    vec3 camera_up;
+    vec3 image_plane_center;
+    vec3 sun_direction;
 };
 
 #define MAX_DIST  400.0
 #define MAX_STEPS 500
 #define EPSILON   0.0001
-#define Power     5
+#define Power     5.0
 
 vec3
 palette(float t, vec3 a, vec3 b, vec3 c, vec3 d)
@@ -29,10 +30,9 @@ vec4
 colorForQ(int steps)
 {
     float t = float(steps);
-    // tweak these to taste:
     vec3 A = vec3(0.8, .5, .4);
     vec3 B = vec3(0.2, .4, .2);
-    vec3 C = vec3(2.0 / 14, 1.0 / 14, 1.0 / 14);
+    vec3 C = vec3(2.0 / 14.0, 1.0 / 14.0, 1.0 / 14.0);
     vec3 D = vec3(0, .25, .25);
     return vec4(palette(t, A, B, C, D), 1.0);
 }
@@ -147,7 +147,7 @@ ambientocclusion(vec3 ro, vec3 normal)
     }
 
     // invert and clamp to [0,1]
-    return clamp(1.0 - pow(occlusion, 5), 0.5, 1.0);
+    return clamp(1.0 - pow(occlusion, 5.0), 0.5, 1.0);
 }
 
 void
@@ -156,13 +156,13 @@ main()
     vec2 xy = pos.xy - resolution.xy * 0.5;
 
     // assemble ray
-    vec3 rd = normalize(xy.x * right + xy.y * up + z);
+    vec3 rd = normalize(xy.x * camera_right + xy.y * camera_up + image_plane_center);
     int p_steps = 0;
-    float dist = trace(camPos, rd, p_steps);
+    float dist = trace(camera_position, rd, p_steps);
     if (dist < MAX_DIST) {
-        vec3 p = camPos + rd * dist;
+        vec3 p = camera_position + rd * dist;
         vec3 n = estimateNormal(p);
-        float sh = softshadow(p + n * EPSILON * 5.0, sunDirection);
+        float sh = softshadow(p + n * EPSILON * 5.0, sun_direction);
         float ao = ambientocclusion(p + n * EPSILON * 5.0, n);
         fragColor = colorForQ(p_steps);
         fragColor.xyz *= sh;

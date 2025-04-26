@@ -71,7 +71,8 @@ Camera::process_input(GLFWwindow* window)
 bool
 Camera::process_input(std::pair<float, float> mouse_movements)
 {
-    if (mouse_movements.first == 0.0f && mouse_movements.second == 0.0f)
+    if (static_cast<int>(mouse_movements.first) == 0
+        && static_cast<int>(mouse_movements.second) == 0)
         return false;
     modify_yaw(mouse_movements.first * .002f);
     modify_pitch(-mouse_movements.second * .003f);
