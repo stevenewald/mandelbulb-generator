@@ -5,6 +5,8 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <utility>
+
 namespace fractal {
 class Camera {
     static constexpr float DELTA = 0.01f;
@@ -22,6 +24,7 @@ public:
     void modify_radius(float delta);
 
     bool process_input(GLFWwindow* window);
+    bool process_input(std::pair<float, float> mouse_movements);
 
     struct camera_args {
         alignas(16) glm::vec3 camera_position;

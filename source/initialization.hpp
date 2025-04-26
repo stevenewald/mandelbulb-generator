@@ -7,6 +7,7 @@
 #include "handles/glfw_context_handle.hpp"
 #include "handles/glfw_window_handle.hpp"
 #include "handles/program.hpp"
+#include "mouse_tracker.hpp"
 
 namespace fractal {
 
@@ -40,6 +41,7 @@ struct app {
     Camera camera{START_YAW};
     CameraUBO camera_ubo;
     Cubemap cube{CUBEMAP_IMAGES};
+    MouseTracker tracker;
 };
 
 void

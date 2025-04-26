@@ -27,7 +27,9 @@ tick()
 {
     glfwPollEvents();
     APP->glfw_window.on_first();
+    APP->tracker.tick(APP->glfw_window.get_window());
     if (!APP->camera.process_input(APP->glfw_window.get_window())
+        && !APP->camera.process_input(APP->tracker.get_and_reset_dragged())
         && !APP->glfw_window.has_resized()) {
         return;
     }
