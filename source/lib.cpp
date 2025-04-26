@@ -25,20 +25,17 @@ setup()
 void
 tick()
 {
-    static bool has_run = false;
     glfwPollEvents();
     APP->glfw_window.on_first();
-    if (!APP->camera.process_input(APP->glfw_window.get_window()) && has_run) {
+    if (!APP->camera.process_input(APP->glfw_window.get_window())
+        && !APP->glfw_window.has_resized()) {
         return;
     }
-    has_run = true;
 
     APP->camera_ubo.update(APP->camera.get_args(APP->glfw_window.get_width(), FOV));
     APP->camera_ubo.bind();
 
     int vertex_res_location = APP->program.get_uniform_location("resolution");
-    // std::cout << APP->glfw_window.get_width() << ", " <<
-    // APP->glfw_window.get_height() << "\n";
     glUniform2f(
         vertex_res_location, APP->glfw_window.get_width(), APP->glfw_window.get_height()
     );

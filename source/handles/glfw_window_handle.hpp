@@ -14,6 +14,7 @@ class GlfwWindowHandle {
     GLFWwindow* const WINDOW;
     float width_{};
     float height_{};
+    bool has_resized_{};
 
 #ifdef __EMSCRIPTEN__
 
@@ -54,6 +55,10 @@ class GlfwWindowHandle {
     void
     resize_callback_(float width, float height)
     {
+        if (static_cast<int>(width) != static_cast<int>(width_)
+            || static_cast<int>(height_) != static_cast<int>(height)) {
+            has_resized_ = true;
+        }
         width_ = width;
         height_ = height;
     }
@@ -91,6 +96,16 @@ public:
 #ifdef __EMSCRIPTEN__
         emscripten_resize_callback_();
 #endif
+    }
+
+    bool
+    has_resized()
+    {
+        if (has_resized_) {
+            has_resized_ = false;
+            return true;
+        }
+        return false;
     }
 
     float
