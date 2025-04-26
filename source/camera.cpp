@@ -23,7 +23,8 @@ void
 Camera::modify_radius(float delta)
 {
     radius_ += delta;
-    radius_ = std::min(radius_, 4.0f);
+    radius_ = std::min(radius_, MAX_RADIUS);
+    radius_ = std::max(radius_, MIN_RADIUS);
 }
 
 bool

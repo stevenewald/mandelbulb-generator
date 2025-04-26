@@ -46,7 +46,7 @@ SDF(vec3 pos, out int steps)
     for (int i = 0; i < 20; i++) {
         r = length(z);
         steps = i;
-        if (r > 4.0)
+        if (r > 2.0)
             break;
 
         // convert to polar coordinates
@@ -70,7 +70,7 @@ SDF(vec3 pos, out int steps)
 float
 trace(vec3 ro, vec3 rd, out int steps)
 {
-    float depth = 0.0;
+    float depth = max(length(ro) - 2.0, 0.0);
 
     for (int i = 0; i < MAX_STEPS; ++i) {
         float dist = SDF(ro + depth * rd, steps);

@@ -102,7 +102,7 @@ public:
     float
     get_height() const
     {
-        return width_;
+        return height_;
     }
 
     GlfwWindowHandle(const GlfwWindowHandle&) = delete;

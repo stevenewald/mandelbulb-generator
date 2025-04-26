@@ -7,8 +7,10 @@
 
 namespace fractal {
 class Camera {
-    static constexpr float DELTA = 0.001f;
-    float radius_ = 4.0f;
+    static constexpr float DELTA = 0.01f;
+    static constexpr float MIN_RADIUS = 3.0f;
+    static constexpr float MAX_RADIUS = 10.0f;
+    float radius_ = 6.0f;
     float pitch_ = 0.0001f;
     float yaw_;
 

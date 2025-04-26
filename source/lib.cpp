@@ -6,6 +6,7 @@
 #include <fmt/core.h>
 #include <GLFW/glfw3.h>
 
+#include <iostream>
 #include <memory>
 #include <thread>
 
@@ -36,6 +37,8 @@ tick()
     APP->camera_ubo.bind();
 
     int vertex_res_location = APP->program.get_uniform_location("resolution");
+    // std::cout << APP->glfw_window.get_width() << ", " <<
+    // APP->glfw_window.get_height() << "\n";
     glUniform2f(
         vertex_res_location, APP->glfw_window.get_width(), APP->glfw_window.get_height()
     );
