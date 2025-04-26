@@ -1,5 +1,5 @@
 #pragma once
-#include "handles/shader.hpp"
+#include "render/shader.hpp"
 
 namespace fractal {
 class Program {

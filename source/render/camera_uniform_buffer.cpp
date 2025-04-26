@@ -1,6 +1,6 @@
-#include "camera_ubo.hpp"
+#include "render/camera_uniform_buffer.hpp"
 
-#include "camera.hpp"
+#include "math/camera.hpp"
 #include "opengl_bindings.hpp"
 
 namespace fractal {

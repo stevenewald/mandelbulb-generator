@@ -1,10 +1,9 @@
-#include "handles/cubemap.hpp"
+#include "render/cubemap.hpp"
 
-#include "handles/image.hpp"
+#include "opengl_bindings.hpp"
+#include "render/image.hpp"
 
 #include <fmt/format.h>
-
-#include <stdexcept>
 
 namespace fractal {
 

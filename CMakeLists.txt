@@ -27,13 +27,14 @@ add_compile_definitions(GLFW_INCLUDE_NONE)
 add_library(
     mandelbulb-generator_lib OBJECT
     source/lib.cpp
-	source/handles/glfw_context_handle.cpp
-	source/handles/shader.cpp
-	source/handles/program.cpp
-	source/camera.cpp
-	source/camera_ubo.cpp
-	source/handles/cubemap.cpp
-	source/handles/image.cpp
+	source/platform/glfw_context_handle.cpp
+	source/render/shader.cpp
+	source/render/program.cpp
+	source/math/camera.cpp
+	source/render/camera_uniform_buffer.cpp
+	source/render/cubemap.cpp
+	source/render/image.cpp
+	source/app/engine.cpp
 )
 
 target_include_directories(

@@ -22,7 +22,6 @@ int
 main()
 {
     try {
-        fractal::setup();
         start_loop();
     } catch (const std::exception& e) {
         std::cerr << "Fatal exception thrown: " << e.what() << "\n";

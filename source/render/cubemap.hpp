@@ -1,10 +1,6 @@
 #pragma once
 
-#include "opengl_bindings.hpp"
-
 #include <span>
-#include <string>
-#include <vector>
 
 namespace fractal {
 class Cubemap {

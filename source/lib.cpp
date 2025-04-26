@@ -1,26 +1,18 @@
 #include "lib.hpp"
 
+#include "app/engine.hpp"
 #include "config.hpp"
-#include "initialization.hpp"
 
 #include <fmt/core.h>
 #include <GLFW/glfw3.h>
 
-#include <iostream>
 #include <memory>
 #include <thread>
 
 namespace fractal {
 namespace {
-const std::unique_ptr<app> APP = std::make_unique<app>();
+const std::unique_ptr<App> APP = std::make_unique<App>();
 } // namespace
-
-void
-setup()
-{
-    APP->program.use();
-    initialize_uniforms(APP->program);
-}
 
 void
 tick()

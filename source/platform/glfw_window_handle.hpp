@@ -38,7 +38,6 @@ class GlfwWindowHandle {
         emscripten_set_canvas_element_size(
             "#canvas", static_cast<int>(fb_w), static_cast<int>(fb_h)
         );
-        glViewport(0, 0, static_cast<int>(fb_w), static_cast<int>(fb_h));
 
         resize_callback_(fb_w, fb_h);
     }
@@ -61,6 +60,7 @@ class GlfwWindowHandle {
         }
         width_ = width;
         height_ = height;
+        glViewport(0, 0, static_cast<int>(width), static_cast<int>(height));
     }
 
 public:

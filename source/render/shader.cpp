@@ -1,10 +1,8 @@
-#include "handles/shader.hpp"
+#include "render/shader.hpp"
 
 #include "opengl_bindings.hpp"
 
 #include <fmt/format.h>
-
-#include <cstdint>
 
 #include <array>
 #include <filesystem>
