@@ -23,9 +23,11 @@ check_compilation_error(unsigned int shader_id)
 
     if (success == GL_FALSE) {
         glGetShaderInfoLog(shader_id, 512, nullptr, info_log.data());
-        throw std::runtime_error(fmt::format(
-            "ERROR::SHADER::VERTEX::COMPILATION_FAILED: {}", info_log.data()
-        ));
+        throw std::runtime_error(
+            fmt::format(
+                "ERROR::SHADER::VERTEX::COMPILATION_FAILED: {}", info_log.data()
+            )
+        );
     }
 }
 

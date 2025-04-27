@@ -19,8 +19,14 @@ jobs:
     - uses: actions/setup-python@v5
       with: { python-version: "3.12" }
 
+    - name: Install clang-format
+      run: pip install clang-format
+
+    - name: Check clang format version
+      run: clang-format --version
+
     - name: Lint
-      run: cmake -D FORMAT_COMMAND=clang-format-14 -P cmake/lint.cmake
+      run: cmake -D FORMAT_COMMAND=clang-format -P cmake/lint.cmake
 
   build:
     needs: [lint]

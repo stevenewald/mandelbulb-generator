@@ -26,5 +26,5 @@ if [ -f conan_cache_save.tgz ]; then
   conan cache restore conan_cache_save.tgz
 fi
 conan remove \* --lru=1M -c
-conan install . -b missing
+conan install . -b missing -o web_build=False
 conan cache save '*/*:*' --file=conan_cache_save.tgz
