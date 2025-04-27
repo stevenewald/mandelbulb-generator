@@ -1,9 +1,8 @@
 #pragma once
 
+#include "render/uniform_camera_args.hpp"
+
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/constants.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 #include <utility>
 
@@ -26,14 +25,6 @@ public:
     bool process_input(GLFWwindow* window);
     bool process_input(std::pair<float, float> mouse_movements);
 
-    struct camera_args {
-        alignas(16) glm::vec3 camera_position;
-        alignas(16) glm::vec3 camera_right;
-        alignas(16) glm::vec3 camera_up;
-        alignas(16) glm::vec3 image_plane_center;
-        alignas(16) glm::vec3 sun_direction;
-    };
-
-    camera_args get_args(float y_res, float fov) const;
+    uniform_camera_args get_args(float y_res, float fov) const;
 };
 } // namespace fractal

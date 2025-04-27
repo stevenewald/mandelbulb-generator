@@ -1,8 +1,6 @@
 #pragma once
 
-#include "math/camera.hpp"
-
-#include <glm/glm.hpp>
+#include "uniform_camera_args.hpp"
 
 namespace fractal {
 
@@ -17,7 +15,7 @@ public:
     CameraUBO& operator=(CameraUBO&&) = delete;
     ~CameraUBO();
 
-    void update(const Camera::camera_args& args) const;
+    void update(const uniform_camera_args& args) const;
     void bind(unsigned int binding_point = 0) const;
 };
 

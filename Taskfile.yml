@@ -12,8 +12,8 @@ tasks:
     vars:
       HOST_CONAN_PROFILE: '{{if eq .WEB_BUILD "True"}}-pr:h emscripten{{else}}{{end}}'
     cmds:
-      - conan install . -pr:b cpp23 {{.HOST_CONAN_PROFILE}} -s build_type=Debug -b missing -o web_build={{.WEB_BUILD}}
-      - conan install . -pr:b cpp23 {{.HOST_CONAN_PROFILE}} -s build_type=Release -b missing -o web_build={{.WEB_BUILD}}
+      - conan install . -pr:b default {{.HOST_CONAN_PROFILE}} -s build_type=Debug -b missing -o web_build={{.WEB_BUILD}}
+      - conan install . -pr:b default {{.HOST_CONAN_PROFILE}} -s build_type=Release -b missing -o web_build={{.WEB_BUILD}}
 
   init:
     dir: .
@@ -37,7 +37,7 @@ tasks:
     dir: .
     vars:
       PATH: '{{if eq .RELEASE_BUILD "True"}}build/{{.NAME}}{{else}}build/dev/{{.NAME}}{{end}}'
-      CMD: '{{if eq .WEB_BUILD "True"}}emrun --browser chrome --port 8080 {{ .PATH}}.html{{else}}./{{ .PATH }}{{end}}'
+      CMD: '{{if eq .WEB_BUILD "True"}}emrun --browser firefox --port 8080 {{ .PATH}}.html{{else}}./{{ .PATH }}{{end}}'
     cmds:
       - task: build
       - true && {{ .CMD }}

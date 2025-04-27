@@ -28,6 +28,7 @@ add_library(
     mandelbulb-generator_lib OBJECT
     source/lib.cpp
 	source/platform/glfw_context_handle.cpp
+	source/platform/glfw_window_handle.cpp
 	source/render/shader.cpp
 	source/render/program.cpp
 	source/math/camera.cpp
@@ -86,8 +87,8 @@ if(EMSCRIPTEN)
 	target_link_options(mandelbulb-generator_exe PRIVATE
     # JavaScript port of GLFW3
     "-sUSE_GLFW=3"
-	"--embed-file=${CMAKE_SOURCE_DIR}/shaders/fragment/mandelbulb_es.glsl@/shaders/fragment/mandelbulb_es.glsl"
-    "--embed-file=${CMAKE_SOURCE_DIR}/shaders/vertex/single_triangle_es.glsl@/shaders/vertex/single_triangle_es.glsl"
+	"--embed-file=${CMAKE_SOURCE_DIR}/shaders/fragment/mandelbulb.glsl@/shaders/fragment/mandelbulb.glsl"
+    "--embed-file=${CMAKE_SOURCE_DIR}/shaders/vertex/single_triangle.glsl@/shaders/vertex/single_triangle.glsl"
     "--embed-file=${CMAKE_SOURCE_DIR}/images/@/images"
     # WebGL2 / ES3 support
     "-sMAX_WEBGL_VERSION=2"

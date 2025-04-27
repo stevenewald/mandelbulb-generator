@@ -1,8 +1,7 @@
 #include "camera.hpp"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/vec3.hpp>
 
 #include <algorithm>
 
@@ -79,10 +78,10 @@ Camera::process_input(std::pair<float, float> mouse_movements)
     return true;
 }
 
-Camera::camera_args
+uniform_camera_args
 Camera::get_args(float y_res, float fov) const
 {
-    Camera::camera_args args{};
+    uniform_camera_args args{};
 
     args.camera_position[0] = radius_ * cosf(pitch_) * sinf(yaw_);
     args.camera_position[1] = radius_ * sinf(pitch_);
