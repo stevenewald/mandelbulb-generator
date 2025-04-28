@@ -1,0 +1,10 @@
+[settings]
+os=Emscripten
+arch=wasm
+build_type=Release
+compiler=clang
+compiler.version=19
+#compiler.libcxx=libc++
+
+[tool_requires]
+emsdk/3.1.73
